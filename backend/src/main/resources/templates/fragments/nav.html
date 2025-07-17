@@ -1,0 +1,29 @@
+<nav th:fragment="commonNav" class="navbar navbar-expand-md sticky-top">
+  <div class="container">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbar-content"
+      aria-controls="navbar-content"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-content">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/reservation}">会議室予約</a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" th:href="@{/admin/user}">ユーザ登録</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/room}">会議室登録</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
