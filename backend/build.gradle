@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.0'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.flywaydb.flyway' version '9.0.0'
+    id 'nebula.lint' version '17.3.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'com.mysql:mysql-connector-j:9.1.0'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+flyway {
+    url = 'jdbc:mysql://db:3306/reservation_db'
+    user = 'root'
+    password = 'secret'
+    locations = ['filesystem:src/main/resources/db/migration']
+}
+
+bootRun {
+    jvmArgs = ["-Dspring.devtools.restart.enabled=true", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
+}

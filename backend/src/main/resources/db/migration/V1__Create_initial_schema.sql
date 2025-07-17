@@ -1,0 +1,31 @@
+USE reservation_db;
+
+CREATE TABLE IF NOT EXISTS `user` (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    is_admin BIT(1) NOT NULL,
+    name VARCHAR(24) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    tel VARCHAR(20) NOT NULL,
+    department VARCHAR(255) NOT NULL,
+    picture MEDIUMBLOB
+);
+
+CREATE TABLE IF NOT EXISTS room (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    place VARCHAR(255) NOT NULL,
+    tel VARCHAR(20) NOT NULL,
+    remarks VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS reservation (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    room_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    use_from_datetime DATETIME NOT NULL,
+    use_to_datetime DATETIME NOT NULL,
+    remarks VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE,
+    FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE
+);

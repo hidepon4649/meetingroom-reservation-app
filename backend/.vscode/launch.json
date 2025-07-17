@@ -1,0 +1,31 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}",
+      "projectName": "backend" // プロジェクト名を追加
+    },
+    {
+      "type": "java",
+      "name": "MeetingRoomReservationApplication",
+      "request": "launch",
+      "mainClass": "com.example.meetingroom.MeetingRoomReservationApplication",
+      "projectName": "backend"
+    },
+    {
+      "type": "java",
+      "name": "Remote Debug MeetingRoomReservationApplication (in Docker)",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "showStaticVariables": true,
+      "projectName": "backend"
+    }
+  ]
+}
