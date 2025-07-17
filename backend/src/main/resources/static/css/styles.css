@@ -1,0 +1,20 @@
+/* PC時はカード非表示・テーブル表示 */
+.user-card-list {
+  display: none;
+}
+.user-table {
+  display: table;
+}
+.user-table.table-hover tbody tr:hover {
+  --bs-table-hover-bg: #dff; /* ホバー背景色 */
+}
+
+/* スマホ時はカード表示・テーブル非表示 */
+@media (max-width: 768px) {
+  .user-card-list {
+    display: block;
+  }
+  .user-table {
+    display: none;
+  }
+}
