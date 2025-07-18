@@ -43,6 +43,9 @@ logging:
         meetingroom:
           config: DEBUG
           security: DEBUG
+          controller: DEBUG
+          service: DEBUG
+          repository: DEBUG
 
 app:
   timezone: Asia/Tokyo
