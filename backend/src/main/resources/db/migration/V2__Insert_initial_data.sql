@@ -1,6 +1,6 @@
 -- ユーザー初期データ
 INSERT INTO `user` (email, is_admin, name, password, tel, department, picture) VALUES
-('admin@example.com', 1, '管理者', 'adminpass', '03-1234-0001' , '総務部' , NULL),
+('admin@example.com', 1, '総務美子', 'adminpass', '03-1234-0001' , '総務部' , NULL),
 ('user1@example.com', 0, '山田太郎', 'user1pass', '03-1234-0001' , '営業部' , NULL),
 ('user2@example.com', 0, '佐藤花子', 'user2pass', '03-1234-0001' , '品質管理部' , NULL),
 ('user3@example.com', 0, '鈴木一郎', 'user3pass', '03-1234-0001' , '製造部' , NULL),
