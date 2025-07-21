@@ -40,12 +40,12 @@
             </tr>
             <!-- ユーザ一覧 -->
             <tr th:each="user : ${users}">
-              <td th:text="${user.id}"></td>
-              <td th:text="${user.isAdmin ? '◯' : ''}"></td>
-              <td th:text="${user.name}"></td>
-              <td th:text="${user.department}"></td>
-              <td th:text="${user.email}"></td>
-              <td th:text="${user.tel}"></td>
+              <td>[[${user.id}]]</td>
+              <td>[[${user.isAdmin ? '◯' : ''}]]</td>
+              <td>[[${user.name}]]</td>
+              <td>[[${user.department}]]</td>
+              <td>[[${user.email}]]</td>
+              <td>[[${user.tel}]]</td>
               <td></td>
               <td>
                 <div class="d-flex">
@@ -110,26 +110,21 @@
             <div class="card-body">
               <h5 class="card-title" th:text="'名前:' + ${user.name}"></h5>
               <div class="row">
-                <div
-                  class="card-text mb-1 col-auto"
-                  th:text="'id:' + ${user.id}"
-                ></div>
-                <div
-                  class="card-text mb-1 col-auto"
-                  th:text="${user.isAdmin ? '管理者' : ''}"
-                ></div>
-                <div
-                  class="card-text mb-1 col-auto"
-                  th:text="'所属:' + ${user.department}"
-                ></div>
-                <div
-                  class="card-text mb-1 col-auto"
-                  th:text="'email:' + ${user.email}"
-                ></div>
-                <div
-                  class="card-text mb-2 col-auto"
-                  th:text="'tel:' + ${user.tel}"
-                ></div>
+                <div class="card-text mb-1 col-auto">
+                  [['id:' + ${user.id}]]
+                </div>
+                <div class="card-text mb-1 col-auto">
+                  [[${user.isAdmin ? '管理者' : ''}]]
+                </div>
+                <div class="card-text mb-1 col-auto">
+                  [['所属:' + ${user.department}]]
+                </div>
+                <div class="card-text mb-1 col-auto">
+                  [['email:' + ${user.email}]]
+                </div>
+                <div class="card-text mb-2 col-auto">
+                  [['tel:' + ${user.tel}]]
+                </div>
               </div>
               <div class="d-flex justify-content-between">
                 <!-- 編集ボタン -->
