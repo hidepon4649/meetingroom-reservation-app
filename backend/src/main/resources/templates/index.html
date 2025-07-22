@@ -1,28 +1,13 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html
+  lang="ja"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="fragments/layout ::base(~{::title}, ~{::main})"
+>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>会議室予約システム | トップ</title>
+    <title>会議室予約 | トップ</title>
   </head>
   <body>
-    こんにちは、
-    <span th:text="${user != null && user.name != null ? user.name : '〇〇'}"
-      >〇〇</span
-    >さん！
-    <nav>
-      <ul>
-        <li><a th:href="@{/admin/user}">ユーザ登録</a></li>
-        <li><a th:href="@{/admin/room}">会議室登録</a></li>
-        <li><a th:href="@{/reservation}">会議室予約</a></li>
-      </ul>
-    </nav>
     <main></main>
-    <footer>
-      <ul>
-        <li>トップへ戻る</li>
-        <li>問い合わせ先：管理者のメールアドレス</li>
-      </ul>
-    </footer>
   </body>
 </html>
