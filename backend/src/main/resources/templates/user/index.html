@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="fragments/head :: commonHead"></head>
+<html
+  lang="ja"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="fragments/layout ::base(~{::title}, ~{::main})"
+>
+  <head>
+    <title>会議室予約 | ユーザ登録</title>
+  </head>
   <body>
-    <header th:replace="fragments/header :: commonHeader"></header>
-    <nav th:replace="fragments/nav :: commonNav"></nav>
     <main>
       <div class="container-fluid py-4">
         <!-- テーブル（PC用） -->
@@ -141,6 +145,5 @@
         </div>
       </div>
     </main>
-    <footer th:replace="fragments/footer :: commonFooter"></footer>
   </body>
 </html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html
+  lang="ja"
+  xmlns:th="http://www.thymeleaf.org"
+  th:fragment="base(title, main)"
+>
+  <head th:replace="~{fragments/head :: commonHead}"></head>
+  <body>
+    <header th:replace="~{fragments/header :: commonHeader}"></header>
+    <nav th:replace="~{fragments/nav :: commonNav}"></nav>
+    <main th:replace="${main}"></main>
+    <footer th:replace="~{fragments/footer :: commonFooter}"></footer>
+  </body>
+</html>
