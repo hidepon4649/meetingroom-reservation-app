@@ -87,33 +87,42 @@
           <!-- 新規追加カード -->
           <div class="card mb-2">
             <div class="card-body">
-              <form class="row g-2">
+              <form
+                class="row g-2"
+                th:action="@{/admin/user}"
+                method="post"
+                enctype="multipart/form-data"
+              >
                 <div class="col-12">
                   <label class="form-label">管理者</label>
-                  <input type="checkbox" class="form-check-input" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="admin"
+                  />
                 </div>
                 <div class="col-12">
                   <label class="form-label">名前</label>
-                  <input type="text" class="form-control" />
+                  <input class="form-control" type="text" name="name" />
                 </div>
                 <div class="col-12">
                   <label class="form-label">所属</label>
-                  <input type="text" class="form-control" />
+                  <input class="form-control" type="text" name="department" />
                 </div>
                 <div class="col-12">
                   <label class="form-label">email</label>
-                  <input type="email" class="form-control" />
+                  <input class="form-control" type="email" name="email" />
                 </div>
                 <div class="col-12">
                   <label class="form-label">tel</label>
-                  <input type="tel" class="form-control" />
+                  <input class="form-control" type="tel" name="tel" />
                 </div>
                 <div class="col-12">
                   <label class="form-label">写真</label>
-                  <input type="file" class="form-control" />
+                  <input class="form-control" type="file" name="photo" />
                 </div>
                 <div class="col-12 text-center">
-                  <button class="btn btn-primary">
+                  <button class="btn btn-primary" type="submit">
                     <i class="bi bi-plus-circle"></i>新規登録
                   </button>
                 </div>
