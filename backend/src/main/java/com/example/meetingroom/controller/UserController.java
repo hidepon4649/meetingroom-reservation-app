@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.entity.User;
 import com.example.meetingroom.service.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
@@ -29,16 +32,25 @@ public class UserController {
     public String index(Model model) {
 
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("user", new User());
         return "user/index";
     }
 
     @PostMapping("admin/user")
     public String createUser(
-            User user,
+            @Valid User user,
+            BindingResult bindingResult,
             @RequestParam("photo") MultipartFile photo,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("users", userService.getAllUsers()); // 再表示用
+            return "user/index";
+        }
 
         user.setPassword("pasword");// 初期パスワード
+
         userService.save(user);
 
         // トースト表示用に成功メッセージをフラッシュスコープに保存

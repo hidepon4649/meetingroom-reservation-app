@@ -57,6 +57,7 @@
                 th:action="@{/admin/user}"
                 method="post"
                 enctype="multipart/form-data"
+                th:object="${user}"
               >
                 <td></td>
                 <td>
@@ -66,14 +67,54 @@
                     name="admin"
                   />
                 </td>
-                <td><input class="form-control" type="text" name="name" /></td>
                 <td>
-                  <input class="form-control" type="text" name="department" />
+                  <input class="form-control" type="text" th:field="*{name}" />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}"
+                  >
+                    名前のエラー
+                  </div>
                 </td>
                 <td>
-                  <input class="form-control" type="email" name="email" />
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{department}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('department')}"
+                    th:errors="*{department}"
+                  >
+                    所属のエラー
+                  </div>
                 </td>
-                <td><input class="form-control" type="tel" name="tel" /></td>
+                <td>
+                  <input
+                    class="form-control"
+                    type="email"
+                    th:field="*{email}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"
+                  >
+                    emailのエラー
+                  </div>
+                </td>
+                <td>
+                  <input class="form-control" type="tel" th:field="*{tel}" />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('tel')}"
+                    th:errors="*{tel}"
+                  >
+                    telのエラー
+                  </div>
+                </td>
                 <td><input class="form-control" type="file" name="photo" /></td>
                 <td>
                   <div>
@@ -126,6 +167,7 @@
                 th:action="@{/admin/user}"
                 method="post"
                 enctype="multipart/form-data"
+                th:object="${user}"
               >
                 <div class="col-12">
                   <label class="form-label">管理者</label>
@@ -137,19 +179,55 @@
                 </div>
                 <div class="col-12">
                   <label class="form-label">名前</label>
-                  <input class="form-control" type="text" name="name" />
+                  <input class="form-control" type="text" th:field="*{name}" />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}"
+                  >
+                    名前のエラー
+                  </div>
                 </div>
                 <div class="col-12">
                   <label class="form-label">所属</label>
-                  <input class="form-control" type="text" name="department" />
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{department}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('department')}"
+                    th:errors="*{department}"
+                  >
+                    所属のエラー
+                  </div>
                 </div>
                 <div class="col-12">
                   <label class="form-label">email</label>
-                  <input class="form-control" type="email" name="email" />
+                  <input
+                    class="form-control"
+                    type="email"
+                    th:field="*{email}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"
+                  >
+                    emailのエラー
+                  </div>
                 </div>
                 <div class="col-12">
                   <label class="form-label">tel</label>
-                  <input class="form-control" type="tel" name="tel" />
+                  <input class="form-control" type="tel" th:field="*{tel}" />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('tel')}"
+                    th:errors="*{tel}"
+                  >
+                    telのエラー
+                  </div>
                 </div>
                 <div class="col-12">
                   <label class="form-label">写真</label>
@@ -195,9 +273,6 @@
                   <i class="bi bi-pencil"></i>
                 </button>
                 <!-- 削除ボタン -->
-                <!-- <button class="btn btn-danger">
-                  <i class="bi bi-trash"></i>
-                </button> -->
                 <form
                   th:action="@{/admin/user}"
                   method="post"
