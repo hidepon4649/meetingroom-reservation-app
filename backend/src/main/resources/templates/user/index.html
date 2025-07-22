@@ -27,20 +27,36 @@
           <tbody>
             <!-- 新規登録 -->
             <tr>
-              <td></td>
-              <td><input type="checkbox" class="form-check-input" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="email" class="form-control" /></td>
-              <td><input type="tel" class="form-control" /></td>
-              <td><input type="file" class="form-control" /></td>
-              <td>
-                <div>
-                  <button class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i>新規
-                  </button>
-                </div>
-              </td>
+              <form
+                th:action="@{/admin/user}"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <td></td>
+                <td>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="admin"
+                  />
+                </td>
+                <td><input class="form-control" type="text" name="name" /></td>
+                <td>
+                  <input class="form-control" type="text" name="department" />
+                </td>
+                <td>
+                  <input class="form-control" type="email" name="email" />
+                </td>
+                <td><input class="form-control" type="tel" name="tel" /></td>
+                <td><input class="form-control" type="file" name="photo" /></td>
+                <td>
+                  <div>
+                    <button class="btn btn-primary" type="submit">
+                      <i class="bi bi-plus-circle"></i>新規
+                    </button>
+                  </div>
+                </td>
+              </form>
             </tr>
             <!-- ユーザ一覧 -->
             <tr th:each="user : ${users}">

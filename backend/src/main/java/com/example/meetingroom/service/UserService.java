@@ -7,4 +7,6 @@ import com.example.meetingroom.entity.User;
 public interface UserService {
 
     List<User> getAllUsers();
+
+    void save(User user);
 }

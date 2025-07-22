@@ -6,7 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.meetingroom.entity.User;
 import com.example.meetingroom.service.UserService;
 
 @Controller
@@ -25,6 +29,17 @@ public class UserController {
 
         model.addAttribute("users", userService.getAllUsers());
         return "user/index";
+    }
+
+    @PostMapping("admin/user")
+    public String createUser(
+            User user,
+            @RequestParam("photo") MultipartFile photo,
+            Model model) {
+
+        user.setPassword("pasword");// 初期パスワード
+        userService.save(user);
+        return "redirect:/admin/user";
     }
 
 }
