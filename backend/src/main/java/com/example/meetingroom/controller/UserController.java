@@ -47,4 +47,11 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
+    @PostMapping(value = "/admin/user", params = "_method=delete")
+    public String deleteUser(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+        userService.deleteById(id);
+        redirectAttributes.addFlashAttribute("successMessage", "ユーザーを削除しました。");
+        return "redirect:/admin/user";
+    }
+
 }
