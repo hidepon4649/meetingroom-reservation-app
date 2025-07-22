@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.entity.User;
 import com.example.meetingroom.service.UserService;
@@ -35,10 +36,14 @@ public class UserController {
     public String createUser(
             User user,
             @RequestParam("photo") MultipartFile photo,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
 
         user.setPassword("pasword");// 初期パスワード
         userService.save(user);
+
+        // トースト表示用に成功メッセージをフラッシュスコープに保存
+        redirectAttributes.addFlashAttribute("successMessage", "ユーザを登録しました");
+
         return "redirect:/admin/user";
     }
 
