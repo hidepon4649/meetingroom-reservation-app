@@ -73,6 +73,8 @@ public class UserController {
             return "user/index";
         }
 
+        user.setPassword("pasword");// ダミー
+
         userService.save(user);
 
         // トースト表示用に成功メッセージをフラッシュスコープに保存
