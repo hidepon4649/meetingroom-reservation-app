@@ -6,6 +6,8 @@ import com.example.meetingroom.entity.User;
 
 public interface UserService {
 
+    User findById(Long id);
+
     List<User> getAllUsers();
 
     void save(User user);
