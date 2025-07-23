@@ -36,6 +36,27 @@
       </div>
       <!-- コンテンツ領域 -->
       <div class="container-fluid py-4">
+        <!-- ユーザ編集 -->
+        <form
+          id="editForm"
+          th:action="@{/admin/user}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <input type="hidden" name="_method" value="update" />
+          <input type="hidden" name="id" />
+          <input type="hidden" name="name" />
+          <input type="hidden" name="department" />
+          <input type="hidden" name="email" />
+          <input type="hidden" name="tel" />
+          <input type="hidden" name="admin" />
+        </form>
+        <!-- ユーザ削除 -->
+        <form id="deleteForm" th:action="@{/admin/user}" method="post">
+          <input type="hidden" name="_method" value="delete" />
+          <input type="hidden" name="id" />
+        </form>
+
         <!-- テーブル（PC用） -->
         <table class="table table-striped table-hover user-table">
           <thead class="table-light">
@@ -126,7 +147,7 @@
               </form>
             </tr>
             <!-- ユーザ一覧 -->
-            <tr th:each="user : ${users}">
+            <tr th:each="user : ${users}" th:data-id="${user.id}">
               <td>[[${user.id}]]</td>
               <td>[[${user.isAdmin ? '◯' : ''}]]</td>
               <td>[[${user.name}]]</td>
@@ -137,21 +158,25 @@
               <td>
                 <div class="d-flex">
                   <!-- 編集ボタン -->
-                  <button class="btn btn-secondary mx-1">
+                  <button
+                    class="btn btn-secondary mx-1 edit-button"
+                    th:data-id="${user.id}"
+                    th:data-name="${user.name}"
+                    th:data-department="${user.department}"
+                    th:data-email="${user.email}"
+                    th:data-tel="${user.tel}"
+                    th:data-admin="${user.admin}"
+                    th:data-photo="${user.picture}"
+                  >
                     <i class="bi bi-pencil"></i>
                   </button>
                   <!-- 削除ボタン -->
-                  <form
-                    th:action="@{/admin/user}"
-                    method="post"
-                    onsubmit="return confirm('本当に削除しますか？');"
+                  <button
+                    class="btn btn-danger mx-1 delete-button"
+                    th:data-id="${user.id}"
                   >
-                    <input type="hidden" name="_method" value="delete" />
-                    <input type="hidden" name="id" th:value="${user.id}" />
-                    <button class="btn btn-danger mx-1" type="submit">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </form>
+                    <i class="bi bi-trash"></i>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -269,21 +294,24 @@
               </div>
               <div class="d-flex justify-content-between">
                 <!-- 編集ボタン -->
-                <button class="btn btn-secondary">
+                <button
+                  class="btn btn-secondary edit-button"
+                  th:data-id="${user.id}"
+                  th:data-name="${user.name}"
+                  th:data-department="${user.department}"
+                  th:data-email="${user.email}"
+                  th:data-tel="${user.tel}"
+                  th:data-admin="${user.admin}"
+                >
                   <i class="bi bi-pencil"></i>
                 </button>
                 <!-- 削除ボタン -->
-                <form
-                  th:action="@{/admin/user}"
-                  method="post"
-                  onsubmit="return confirm('本当に削除しますか？');"
+                <button
+                  class="btn btn-danger mx-1 delete-button"
+                  th:data-id="${user.id}"
                 >
-                  <input type="hidden" name="_method" value="delete" />
-                  <input type="hidden" name="id" th:value="${user.id}" />
-                  <button class="btn btn-danger mx-1" type="submit">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </form>
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
             </div>
           </div>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,8 +60,29 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
-    @PostMapping(value = "/admin/user", params = "_method=delete")
-    public String deleteUser(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    @PostMapping(value = "/admin/user/{id}", params = "_method=update")
+    public String updateUser(@PathVariable Long id,
+            @Valid User user,
+            BindingResult bindingResult,
+            @RequestParam("photo") MultipartFile photo,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("users", userService.getAllUsers()); // 再表示用
+            return "user/index";
+        }
+
+        userService.save(user);
+
+        // トースト表示用に成功メッセージをフラッシュスコープに保存
+        redirectAttributes.addFlashAttribute("successMessage", "ユーザーを編集しました。");
+
+        return "redirect:/admin/user";
+    }
+
+    @PostMapping(value = "/admin/user/{id}", params = "_method=delete")
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         userService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "ユーザーを削除しました。");
         return "redirect:/admin/user";
