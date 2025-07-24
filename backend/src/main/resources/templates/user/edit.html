@@ -30,10 +30,10 @@
             <tr>
               <form
                 id="editForm"
-                th:action="@{/admin/user/{id}(id=${user.id})}"
+                th:action="@{/admin/user/{id}(id=${userDto.id})}"
                 method="post"
                 enctype="multipart/form-data"
-                th:object="${user}"
+                th:object="${userDto}"
               >
                 <input type="hidden" name="_method" value="update" />
                 <td></td>
@@ -117,10 +117,10 @@
               <form
                 id="editForm"
                 class="row g-2"
-                th:action="@{/admin/user/{id}(id=${user.id})}"
+                th:action="@{/admin/user/{id}(id=${userDto.id})}"
                 method="post"
                 enctype="multipart/form-data"
-                th:object="${user}"
+                th:object="${userDto}"
               >
                 <input type="hidden" name="_method" value="update" />
                 <div class="col-12">
@@ -190,7 +190,7 @@
                 <div class="col-12 text-center">
                   <button
                     class="btn btn-save btn-success"
-                    th:data-id="${user.id}"
+                    th:data-id="${userDto.id}"
                     type="submit"
                   >
                     保存

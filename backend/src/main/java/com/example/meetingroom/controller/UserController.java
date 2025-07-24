@@ -35,13 +35,13 @@ public class UserController {
     public String index(Model model) {
 
         model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("user", new User());
+        model.addAttribute("userDto", new UserDto());
         return "user/index";
     }
 
     @PostMapping("admin/user")
     public String createUser(
-            @Validated @ModelAttribute UserDto dto,
+            @Validated @ModelAttribute UserDto userDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
@@ -51,25 +51,25 @@ public class UserController {
             return "user/index";
         }
 
-        User user = new User();
-        user.setEmail(dto.getEmail());
-        user.setAdmin(dto.isAdmin());
-        user.setName(dto.getName());
-        user.setPassword("password"); // 仮パスワード
-        user.setTel(dto.getTel());
-        user.setDepartment(dto.getDepartment());
+        User newUser = new User();
+        newUser.setEmail(userDto.getEmail());
+        newUser.setAdmin(userDto.isAdmin());
+        newUser.setName(userDto.getName());
+        newUser.setPassword("password"); // 仮パスワード
+        newUser.setTel(userDto.getTel());
+        newUser.setDepartment(userDto.getDepartment());
 
-        MultipartFile picture = dto.getPicture();
+        MultipartFile picture = userDto.getPicture();
         if (picture != null && !picture.isEmpty()) {
             try {
-                user.setPicture(picture.getBytes());
+                newUser.setPicture(picture.getBytes());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
         }
 
-        userService.save(user);
+        userService.save(newUser);
 
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "ユーザを登録しました");
@@ -79,33 +79,31 @@ public class UserController {
 
     @PostMapping(value = "/admin/user/{id}", params = "_method=update")
     public String updateUser(@PathVariable Long id,
-            @Validated @ModelAttribute UserDto dto,
+            @Validated @ModelAttribute UserDto userDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", dto); // 再表示用
             return "user/edit";
         }
 
         User user = new User();
-        user.setId(dto.getId());
-        user.setEmail(dto.getEmail());
-        user.setAdmin(dto.isAdmin());
-        user.setName(dto.getName());
+        user.setId(userDto.getId());
+        user.setEmail(userDto.getEmail());
+        user.setAdmin(userDto.isAdmin());
+        user.setName(userDto.getName());
         user.setPassword("password"); // 仮パスワード
-        user.setTel(dto.getTel());
-        user.setDepartment(dto.getDepartment());
+        user.setTel(userDto.getTel());
+        user.setDepartment(userDto.getDepartment());
 
-        MultipartFile picture = dto.getPicture();
+        MultipartFile picture = userDto.getPicture();
         if (picture != null && !picture.isEmpty()) {
             try {
                 user.setPicture(picture.getBytes());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
 
         userService.save(user);
@@ -121,7 +119,17 @@ public class UserController {
             Model model) {
 
         User user = userService.findById(id);
-        model.addAttribute("user", user);
+
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setAdmin(user.isAdmin());
+        userDto.setName(user.getName());
+        userDto.setPassword(user.getPassword());
+        userDto.setTel(user.getTel());
+        userDto.setDepartment(user.getDepartment());
+
+        model.addAttribute("userDto", userDto);
 
         return "user/edit";
     }
