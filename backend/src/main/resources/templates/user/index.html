@@ -47,10 +47,11 @@
           <thead class="table-light">
             <tr>
               <th class="text-center">id</th>
+              <th class="text-center">email</th>
+              <th class="text-center">パスワード</th>
               <th class="text-center">管</th>
               <th class="text-center">名前</th>
               <th class="text-center">所属</th>
-              <th class="text-center">email</th>
               <th class="text-center">tel</th>
               <th class="text-center">写真</th>
               <th class="text-center">操作</th>
@@ -66,6 +67,34 @@
                 th:object="${userDto}"
               >
                 <td></td>
+                <td>
+                  <input
+                    class="form-control"
+                    type="email"
+                    th:field="*{email}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"
+                  >
+                    emailのエラー
+                  </div>
+                </td>
+                <td>
+                  <input
+                    class="form-control"
+                    type="password"
+                    th:field="*{password}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('password')}"
+                    th:errors="*{password}"
+                  >
+                    パスワードのエラー
+                  </div>
+                </td>
                 <td>
                   <input
                     class="form-check-input"
@@ -98,20 +127,6 @@
                   </div>
                 </td>
                 <td>
-                  <input
-                    class="form-control"
-                    type="email"
-                    th:field="*{email}"
-                  />
-                  <div
-                    class="text-danger"
-                    th:if="${#fields.hasErrors('email')}"
-                    th:errors="*{email}"
-                  >
-                    emailのエラー
-                  </div>
-                </td>
-                <td>
                   <input class="form-control" type="tel" th:field="*{tel}" />
                   <div
                     class="text-danger"
@@ -136,10 +151,11 @@
             <!-- ユーザ一覧 -->
             <tr th:each="user : ${users}" th:data-id="${user.id}">
               <td>[[${user.id}]]</td>
+              <td>[[${user.email}]]</td>
+              <td>*********</td>
               <td>[[${user.isAdmin ? '◯' : ''}]]</td>
               <td>[[${user.name}]]</td>
               <td>[[${user.department}]]</td>
-              <td>[[${user.email}]]</td>
               <td>[[${user.tel}]]</td>
               <td>
                 <img
@@ -184,6 +200,36 @@
                 th:object="${userDto}"
               >
                 <div class="col-12">
+                  <label class="form-label">email</label>
+                  <input
+                    class="form-control"
+                    type="email"
+                    th:field="*{email}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"
+                  >
+                    emailのエラー
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">パスワード</label>
+                  <input
+                    class="form-control"
+                    type="password"
+                    th:field="*{password}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('password')}"
+                    th:errors="*{password}"
+                  >
+                    パスワードのエラー
+                  </div>
+                </div>
+                <div class="col-12">
                   <label class="form-label">管理者</label>
                   <input
                     class="form-check-input"
@@ -215,21 +261,6 @@
                     th:errors="*{department}"
                   >
                     所属のエラー
-                  </div>
-                </div>
-                <div class="col-12">
-                  <label class="form-label">email</label>
-                  <input
-                    class="form-control"
-                    type="email"
-                    th:field="*{email}"
-                  />
-                  <div
-                    class="text-danger"
-                    th:if="${#fields.hasErrors('email')}"
-                    th:errors="*{email}"
-                  >
-                    emailのエラー
                   </div>
                 </div>
                 <div class="col-12">
@@ -277,13 +308,16 @@
                   [['id:' + ${user.id}]]
                 </div>
                 <div class="card-text mb-1 col-auto">
+                  [['email:' + ${user.email}]]
+                </div>
+                <div class="card-text mb-1 col-auto">
+                  *********
+                </div>
+                <div class="card-text mb-1 col-auto">
                   [[${user.isAdmin ? '管理者' : ''}]]
                 </div>
                 <div class="card-text mb-1 col-auto">
                   [['所属:' + ${user.department}]]
-                </div>
-                <div class="card-text mb-1 col-auto">
-                  [['email:' + ${user.email}]]
                 </div>
                 <div class="card-text mb-2 col-auto">
                   [['tel:' + ${user.tel}]]

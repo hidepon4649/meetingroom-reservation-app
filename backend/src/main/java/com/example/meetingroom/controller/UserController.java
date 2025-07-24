@@ -55,7 +55,7 @@ public class UserController {
         newUser.setEmail(userDto.getEmail());
         newUser.setAdmin(userDto.isAdmin());
         newUser.setName(userDto.getName());
-        newUser.setPassword("password"); // 仮パスワード
+        newUser.setPassword(userDto.getPassword());
         newUser.setTel(userDto.getTel());
         newUser.setDepartment(userDto.getDepartment());
 
@@ -93,7 +93,7 @@ public class UserController {
         user.setEmail(userDto.getEmail());
         user.setAdmin(userDto.isAdmin());
         user.setName(userDto.getName());
-        user.setPassword("password"); // 仮パスワード
+        user.setPassword(userDto.getPassword());
         user.setTel(userDto.getTel());
         user.setDepartment(userDto.getDepartment());
 

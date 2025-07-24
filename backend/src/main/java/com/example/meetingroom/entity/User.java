@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -28,6 +29,9 @@ public class User {
     @Size(min = 2, max = 24, message = "名前は{min}文字以上、{max}文字以下です")
     private String name;
 
+    @NotBlank(message = "パスワードは必須です")
+    @Size(min = 6, max = 24, message = "パスワードは{min}文字以上、{max}文字以下です")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "パスワードは半角英数字のみ使用できます")
     private String password;
 
     @NotBlank(message = "telは必須です")
