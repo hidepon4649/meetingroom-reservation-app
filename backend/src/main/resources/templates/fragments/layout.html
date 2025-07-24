@@ -32,7 +32,10 @@
       </div>
     </header>
 
-    <nav class="navbar navbar-expand-md sticky-top">
+    <nav
+      th:if="${#authorization.expression('isAuthenticated()')}"
+      class="navbar navbar-expand-md sticky-top"
+    >
       <div class="container">
         <button
           class="navbar-toggler"
@@ -63,12 +66,15 @@
 
     <main th:replace="${main}"></main>
 
-    <footer class="py-4">
+    <footer
+      th:if="${#authorization.expression('isAuthenticated()')}"
+      class="py-4"
+    >
       <div class="container">
         <ul>
           <li><i class="bi bi-house"></i>：トップへ戻る</li>
           <li><i class="bi bi-envelope-at"></i>：管理者のメールアドレス</li>
-          <li th:if="${#authorization.expression('isAuthenticated()')}">
+          <li>
             <form th:action="@{/logout}" method="post">
               <button type="submit" class="btn btn-link p-0">
                 <i class="bi bi-box-arrow-right"></i>：ログアウト
