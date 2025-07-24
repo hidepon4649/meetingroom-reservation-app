@@ -1,18 +1,15 @@
-package com.example.meetingroom.entity;
+package com.example.meetingroom.dto;
 
-import java.util.Base64;
+import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@Entity
-public class User {
+public class UserDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +35,7 @@ public class User {
     @Size(min = 2, max = 255, message = "部署は{min}文字以上、{max}文字以下です")
     private String department;
 
-    @Lob
-    private byte[] picture;
+    private MultipartFile picture;
 
     public Long getId() {
         return id;
@@ -97,15 +93,11 @@ public class User {
         this.department = department;
     }
 
-    public String getPicture() {
-        if (picture != null) {
-            return Base64.getEncoder().encodeToString(picture);
-        }
-        return null;
-
+    public MultipartFile getPicture() {
+        return picture;
     }
 
-    public void setPicture(byte[] picture) {
+    public void setPicture(MultipartFile picture) {
         this.picture = picture;
     }
 

@@ -1,22 +1,24 @@
 package com.example.meetingroom.controller;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.meetingroom.dto.UserDto;
 import com.example.meetingroom.entity.User;
 import com.example.meetingroom.service.UserService;
-
-import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
@@ -39,9 +41,8 @@ public class UserController {
 
     @PostMapping("admin/user")
     public String createUser(
-            @Valid User user,
+            @Validated @ModelAttribute UserDto dto,
             BindingResult bindingResult,
-            @RequestParam("photo") MultipartFile photo,
             RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -50,7 +51,23 @@ public class UserController {
             return "user/index";
         }
 
-        user.setPassword("pasword");// 初期パスワード
+        User user = new User();
+        user.setEmail(dto.getEmail());
+        user.setAdmin(dto.isAdmin());
+        user.setName(dto.getName());
+        user.setPassword("password"); // 仮パスワード
+        user.setTel(dto.getTel());
+        user.setDepartment(dto.getDepartment());
+
+        MultipartFile picture = dto.getPicture();
+        if (picture != null && !picture.isEmpty()) {
+            try {
+                user.setPicture(picture.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
 
         userService.save(user);
 
@@ -62,9 +79,8 @@ public class UserController {
 
     @PostMapping(value = "/admin/user/{id}", params = "_method=update")
     public String updateUser(@PathVariable Long id,
-            @Valid User user,
+            @Validated @ModelAttribute User user,
             BindingResult bindingResult,
-            @RequestParam("photo") MultipartFile photo,
             RedirectAttributes redirectAttributes,
             Model model) {
 

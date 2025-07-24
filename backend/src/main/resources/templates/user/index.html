@@ -121,7 +121,9 @@
                     telのエラー
                   </div>
                 </td>
-                <td><input class="form-control" type="file" name="photo" /></td>
+                <td>
+                  <input class="form-control" type="file" name="picture" />
+                </td>
                 <td>
                   <div>
                     <button class="btn btn-primary" type="submit">
@@ -139,7 +141,15 @@
               <td>[[${user.department}]]</td>
               <td>[[${user.email}]]</td>
               <td>[[${user.tel}]]</td>
-              <td></td>
+              <td>
+                <img
+                  th:if="${user.picture != null}"
+                  th:src="'data:image/jpeg;base64,' + ${user.picture}"
+                  alt="プロフィール画像"
+                  class="img-thumbnail"
+                  style="max-height: 125px"
+                />
+              </td>
               <td>
                 <div class="d-flex">
                   <!-- 編集ボタン -->
@@ -235,7 +245,7 @@
                 </div>
                 <div class="col-12">
                   <label class="form-label">写真</label>
-                  <input class="form-control" type="file" name="photo" />
+                  <input class="form-control" type="file" name="picture" />
                 </div>
                 <div class="col-12 text-center">
                   <button class="btn btn-primary" type="submit">
@@ -247,11 +257,19 @@
           </div>
           <!-- 既存ユーザカード例 -->
           <div th:each="user : ${users}" class="card mb-3">
-            <img
+            <!-- <img
               src="/images/sample.jpg"
               class="card-img-top"
               alt="ユーザー写真"
+            /> -->
+            <img
+              th:if="${user.picture != null}"
+              th:src="'data:image/jpeg;base64,' + ${user.picture}"
+              alt="プロフィール画像"
+              class="card-img-top"
+              style="max-width: 200px"
             />
+
             <div class="card-body">
               <h5 class="card-title" th:text="'名前:' + ${user.name}"></h5>
               <div class="row">
