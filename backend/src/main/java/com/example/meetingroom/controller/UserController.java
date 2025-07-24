@@ -79,17 +79,34 @@ public class UserController {
 
     @PostMapping(value = "/admin/user/{id}", params = "_method=update")
     public String updateUser(@PathVariable Long id,
-            @Validated @ModelAttribute User user,
+            @Validated @ModelAttribute UserDto dto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("users", userService.getAllUsers()); // 再表示用
-            return "user/index";
+            model.addAttribute("user", dto); // 再表示用
+            return "user/edit";
         }
 
-        user.setPassword("pasword");// ダミー
+        User user = new User();
+        user.setId(dto.getId());
+        user.setEmail(dto.getEmail());
+        user.setAdmin(dto.isAdmin());
+        user.setName(dto.getName());
+        user.setPassword("password"); // 仮パスワード
+        user.setTel(dto.getTel());
+        user.setDepartment(dto.getDepartment());
+
+        MultipartFile picture = dto.getPicture();
+        if (picture != null && !picture.isEmpty()) {
+            try {
+                user.setPicture(picture.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
 
         userService.save(user);
 
