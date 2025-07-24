@@ -30,9 +30,9 @@ logging:
     root: INFO
     org:
       springframework:
-        # security: DEBUG
-        # security.web: DEBUG
-        # security.authentication: DEBUG
+        security: DEBUG
+        security.web: DEBUG
+        security.authentication: DEBUG
         transaction: DEBUG
       hibernate:
         SQL: DEBUG

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,9 +26,11 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    UserController(UserService userService) {
+    UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("admin/user")
@@ -55,7 +57,7 @@ public class UserController {
         newUser.setEmail(userDto.getEmail());
         newUser.setAdmin(userDto.isAdmin());
         newUser.setName(userDto.getName());
-        newUser.setPassword(userDto.getPassword());
+        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         newUser.setTel(userDto.getTel());
         newUser.setDepartment(userDto.getDepartment());
 
@@ -93,7 +95,7 @@ public class UserController {
         user.setEmail(userDto.getEmail());
         user.setAdmin(userDto.isAdmin());
         user.setName(userDto.getName());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setTel(userDto.getTel());
         user.setDepartment(userDto.getDepartment());
 

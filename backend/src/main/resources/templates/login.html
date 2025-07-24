@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+  lang="ja"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragments/layout ::base(~{::title}, ~{::main})}"
+>
+  <head>
+    <title>会議室予約 | ログイン</title>
+  </head>
+  <body>
+    <main>
+      <div class="container py-4">
+        <div
+          class="alert alert-danger mx-auto mb-3"
+          style="max-width: 360px"
+          th:if="${param.error}"
+        >
+          メールアドレスまたはパスワードが正しくありません。
+        </div>
+        <form th:action="@{/login}" method="post">
+          <div class="mx-auto" style="max-width: 360px">
+            <div class="mb-3">
+              <label class="form-label">email</label>
+              <input
+                class="form-control"
+                type="text"
+                name="email"
+                placeholder="email"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">パスワード</label>
+              <input
+                class="form-control"
+                type="password"
+                name="password"
+                placeholder="パスワード"
+              />
+            </div>
+            <div class="text-center">
+              <button class="btn btn-primary mx-3 my-3" type="submit">
+                ログイン
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
