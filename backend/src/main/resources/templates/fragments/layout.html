@@ -26,8 +26,8 @@
       <div class="container text-center">
         こんにちは、
         <span
-          th:text="${user != null && user.name != null ? user.name : '〇〇'}"
-          >〇〇</span
+          th:text="${loginUser != null && loginUser.name != null ? loginUser.name : 'ゲスト'}"
+          >ゲスト</span
         >さん！
       </div>
     </header>
