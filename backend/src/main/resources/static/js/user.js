@@ -1,13 +1,14 @@
+// ユーザ編集ボタン
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.edit-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      const userId = button.getAttribute('data-id');
-      const url = `/admin/user/${encodeURIComponent(userId)}`;
+  document.querySelectorAll('.edit-button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const url = `/admin/user/${btn.dataset.id}`;
       window.location.href = url;
     });
   });
 });
 
+// 取消ボタン(ユーザ編集)
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.btn-cancel').forEach((btn) => {
     btn.addEventListener('click', (event) => {
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// ユーザ削除ボタン
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.delete-button').forEach((btn) => {
     btn.addEventListener('click', () => {
