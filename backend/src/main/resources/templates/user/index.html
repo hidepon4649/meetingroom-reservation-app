@@ -288,11 +288,6 @@
           </div>
           <!-- 既存ユーザカード例 -->
           <div th:each="user : ${users}" class="card mb-3">
-            <!-- <img
-              src="/images/sample.jpg"
-              class="card-img-top"
-              alt="ユーザー写真"
-            /> -->
             <img
               th:if="${user.picture != null}"
               th:src="'data:image/jpeg;base64,' + ${user.picture}"
