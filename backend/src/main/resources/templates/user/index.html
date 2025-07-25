@@ -99,7 +99,7 @@
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    name="admin"
+                    th:field="*{admin}"
                   />
                 </td>
                 <td>
@@ -234,7 +234,7 @@
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    name="admin"
+                    th:field="*{admin}"
                   />
                 </div>
                 <div class="col-12">
@@ -310,9 +310,7 @@
                 <div class="card-text mb-1 col-auto">
                   [['email:' + ${user.email}]]
                 </div>
-                <div class="card-text mb-1 col-auto">
-                  *********
-                </div>
+                <div class="card-text mb-1 col-auto">*********</div>
                 <div class="card-text mb-1 col-auto">
                   [[${user.isAdmin ? '管理者' : ''}]]
                 </div>
