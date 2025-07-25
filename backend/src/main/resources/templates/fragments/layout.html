@@ -23,13 +23,10 @@
 
   <body>
     <header class="py-4">
-      <div class="container text-center">
-        こんにちは、
-        <span
-          th:text="${loginUser != null && loginUser.name != null ? loginUser.name : 'ゲスト'}"
-          >ゲスト</span
-        >さん！
-      </div>
+      <div
+        class="container text-center"
+        th:text="|こんにちは、${loginUser != null && loginUser.name != null ?loginUser.name : 'ゲスト'}さん！|"
+      ></div>
     </header>
 
     <nav
