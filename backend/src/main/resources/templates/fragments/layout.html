@@ -2,6 +2,7 @@
 <html
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   th:fragment="base(title, main)"
 >
   <head>
@@ -50,10 +51,10 @@
             <li class="nav-item">
               <a class="nav-link" th:href="@{/reservation}">会議室予約</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
               <a class="nav-link" th:href="@{/admin/user}">ユーザ登録</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
               <a class="nav-link" th:href="@{/admin/room}">会議室登録</a>
             </li>
           </ul>
