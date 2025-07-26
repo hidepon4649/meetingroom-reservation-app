@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -56,6 +57,13 @@ public class RoomController {
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "会議室を登録しました");
 
+        return "redirect:/admin/room";
+    }
+
+    @PostMapping(value = "/admin/room/{id}", params = "_method=delete")
+    public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        roomService.deleteById(id);
+        redirectAttributes.addFlashAttribute("successMessage", "会議室を削除しました。");
         return "redirect:/admin/room";
     }
 
