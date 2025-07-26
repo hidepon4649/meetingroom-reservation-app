@@ -60,6 +60,50 @@ public class RoomController {
         return "redirect:/admin/room";
     }
 
+    @PostMapping(value = "/admin/room/{id}", params = "_method=update")
+    public String updateRoom(@PathVariable Long id,
+            @Validated @ModelAttribute RoomDto roomDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "room/edit";
+        }
+
+        Room room = new Room();
+        room.setId(roomDto.getId());
+        room.setName(roomDto.getName());
+        room.setPlace(roomDto.getPlace());
+        room.setTel(roomDto.getTel());
+        room.setRemarks(roomDto.getRemarks());
+
+        roomService.save(room);
+
+        // トースト表示用に成功メッセージをフラッシュスコープに保存
+        redirectAttributes.addFlashAttribute("successMessage", "会議室を編集しました。");
+
+        return "redirect:/admin/room";
+    }
+
+    @GetMapping(value = "/admin/room/{id}")
+    public String updateRoom(@PathVariable Long id,
+            Model model) {
+
+        Room room = roomService.findById(id);
+
+        RoomDto roomDto = new RoomDto();
+        roomDto.setId(room.getId());
+        roomDto.setName(room.getName());
+        roomDto.setPlace(room.getPlace());
+        roomDto.setTel(room.getTel());
+        roomDto.setRemarks(room.getRemarks());
+
+        model.addAttribute("roomDto", roomDto);
+
+        return "room/edit";
+    }
+
     @PostMapping(value = "/admin/room/{id}", params = "_method=delete")
     public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         roomService.deleteById(id);
