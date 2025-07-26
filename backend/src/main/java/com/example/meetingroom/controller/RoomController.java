@@ -4,9 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.RoomDto;
+import com.example.meetingroom.entity.Room;
 import com.example.meetingroom.service.RoomService;
 
 @Controller
@@ -25,6 +31,32 @@ public class RoomController {
         model.addAttribute("rooms", roomService.getAllRooms());
         model.addAttribute("roomDto", new RoomDto());
         return "room/index";
+    }
+
+    @PostMapping("admin/room")
+    public String createRoom(
+            @Validated @ModelAttribute RoomDto roomDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("rooms", roomService.getAllRooms()); // 再表示用
+            return "room/index";
+        }
+
+        Room newRoom = new Room();
+        newRoom.setName(roomDto.getName());
+        newRoom.setPlace(roomDto.getPlace());
+        newRoom.setTel(roomDto.getTel());
+        newRoom.setRemarks(roomDto.getRemarks());
+
+        roomService.save(newRoom);
+
+        // トースト表示用に成功メッセージをフラッシュスコープに保存
+        redirectAttributes.addFlashAttribute("successMessage", "会議室を登録しました");
+
+        return "redirect:/admin/room";
     }
 
 }
