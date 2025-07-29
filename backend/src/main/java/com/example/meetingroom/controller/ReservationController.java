@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.ReservationDto;
+import com.example.meetingroom.entity.Reservation;
 import com.example.meetingroom.service.ReservationService;
 
 @Controller
@@ -29,6 +30,25 @@ public class ReservationController {
         model.addAttribute("reservations", reservationService.getAllReservations());
         model.addAttribute("reservationDto", new ReservationDto());
         return "reservation/index";
+    }
+
+    @GetMapping(value = "/reservation/{id}")
+    public String updateReservation(@PathVariable Long id,
+            Model model) {
+
+        Reservation reservation = reservationService.findById(id);
+
+        ReservationDto reservationDto = new ReservationDto();
+        reservationDto.setId(reservation.getId());
+        reservationDto.setRoom(reservation.getRoom());
+        reservationDto.setUser(reservation.getUser());
+        reservationDto.setUseFromDatetime(reservation.getUseFromDatetime());
+        reservationDto.setUseToDatetime(reservation.getUseToDatetime());
+        reservationDto.setRemarks(reservation.getRemarks());
+
+        model.addAttribute("reservationDto", reservationDto);
+
+        return "reservation/edit";
     }
 
     @PostMapping(value = "/reservation/{id}", params = "_method=delete")

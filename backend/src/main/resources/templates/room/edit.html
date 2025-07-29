@@ -5,7 +5,7 @@
   th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script})}"
 >
   <head>
-    <title>会議室予約 | 会議室編集</title>
+    <title>会議室予約 | 予約編集</title>
   </head>
   <body>
     <main>
@@ -33,7 +33,7 @@
                 th:object="${roomDto}"
               >
                 <input type="hidden" name="_method" value="update" />
-                <td></td>
+                <td>[[*{id}]]</td>
                 <td>
                   <input class="form-control" type="text" th:field="*{name}" />
                   <div

@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reservation-edit-button').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const url = `/admin/reservation/${btn.dataset.id}`;
+      const url = `/reservation/${btn.dataset.id}`;
       window.location.href = url;
     });
   });
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reservation-cancel-button').forEach((btn) => {
     btn.addEventListener('click', (event) => {
       event.preventDefault(); // フォーム送信防止
-      window.location.href = '/admin/reservation'; // 画面遷移
+      window.location.href = '/reservation'; // 画面遷移
     });
   });
 });
