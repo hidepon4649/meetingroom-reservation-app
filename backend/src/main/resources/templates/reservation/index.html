@@ -1,28 +1,292 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html
+  lang="ja"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script})}"
+>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>会議室予約システム | 会議室予約</title>
+    <title>会議室予約 | 会議室予約</title>
   </head>
   <body>
-    こんにちは、
-    <span th:text="${user != null && user.name != null ? user.name : '〇〇'}"
-      >〇〇</span
-    >さん！
-    <nav>
-      <ul>
-        <li><a th:href="@{/admin/user}">ユーザ登録</a></li>
-        <li><a th:href="@{/admin/room}">会議室登録</a></li>
-        <li><a th:href="@{/reservation}">会議室予約</a></li>
-      </ul>
-    </nav>
-    <main></main>
+    <main>
+      <!-- トースト領域 -->
+      <div
+        class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
+        style="z-index: 1080"
+        th:if="${successMessage}"
+      >
+        <div
+          class="toast align-items-center text-bg-success border-0 show"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body" th:text="${successMessage}">
+              登録が完了しました。
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white me-2 m-auto"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+      </div>
+      <!-- コンテンツ領域 -->
+      <div class="container-fluid py-4">
+        <!-- 会議室予約削除 -->
+        <form id="deleteForm" th:action="@{/reservation}" method="post">
+          <input type="hidden" name="_method" value="delete" />
+          <input type="hidden" name="id" />
+        </form>
+
+        <!-- テーブル（PC用） -->
+        <table class="table table-striped table-hover user-table">
+          <thead class="table-light">
+            <tr>
+              <th class="text-center">id</th>
+              <th class="text-center">予約会議室</th>
+              <th class="text-center">予約ユーザ</th>
+              <th class="text-center">利用開始日時</th>
+              <th class="text-center">利用終了日時</th>
+              <th class="text-center">備考</th>
+              <th class="text-center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 新規登録 -->
+            <tr>
+              <form
+                th:action="@{/reservation}"
+                method="post"
+                th:object="${reservationDto}"
+              >
+                <td></td>
+                <td>
+                  <!-- セレクトボックス、予約会議室 -->
+                  <!-- <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}"
+                  >
+                  </div> -->
+                </td>
+                <td>
+                  <!-- セレクトボックス、予約ユーザ -->
+                  <!-- <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}"
+                  >
+                  </div> -->
+                </td>
+                <td>
+                  <!-- カレンダー入力、利用開始日時 -->
+                </td>
+                <td>
+                  <!-- カレンダー入力、利用終了日時 -->
+                </td>
+                <td>
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{remarks}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('remarks')}"
+                    th:errors="*{remarks}"
+                  >
+                    備考のエラー
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <button class="btn btn-primary" type="submit">
+                      <i class="bi bi-plus-circle"></i>新規
+                    </button>
+                  </div>
+                </td>
+              </form>
+            </tr>
+            <!-- 会議室予約一覧 -->
+            <tr
+              th:each="reservation : ${reservations}"
+              th:object="${reservation}"
+            >
+              <td>[[*{id}]]</td>
+              <td>[[*{room.name}]]</td>
+              <td>[[*{user.name}]]</td>
+              <td>[[*{useFromDatetime}]]</td>
+              <td>[[*{useToDatetime}]]</td>
+              <td>[[*{remarks}]]</td>
+              <td>
+                <div class="d-flex">
+                  <!-- 編集ボタン -->
+                  <button
+                    class="btn btn-secondary mx-1 reservation-edit-button"
+                    th:data-id="*{id}"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <!-- 削除ボタン -->
+                  <button
+                    class="btn btn-danger mx-1 reservation-delete-button"
+                    th:data-id="*{id}"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- カード型（スマホ用） -->
+        <div class="user-card-list">
+          <!-- 新規追加カード -->
+          <div class="card mb-2">
+            <div class="card-body">
+              <form
+                class="row g-2"
+                th:action="@{/reservation}"
+                method="post"
+                th:object="${reservationDto}"
+              >
+                <div class="col-12">
+                  <label class="form-label">予約会議室</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{room.name}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('room.name')}"
+                    th:errors="*{room.name}"
+                  >
+                    予約会議室のエラー
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">予約ユーザー</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{user.name}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('user.name')}"
+                    th:errors="*{user.name}"
+                  >
+                    予約ユーザのエラー
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">利用開始日時</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{useFromDatetime}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('useFromDatetime')}"
+                    th:errors="*{useFromDatetime}"
+                  >
+                    利用開始日時のエラー
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">利用終了日時</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{useToDatetime}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('useToDatetime')}"
+                    th:errors="*{useToDatetime}"
+                  >
+                    利用開始日時のエラー
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">備考</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    th:field="*{remarks}"
+                  />
+                  <div
+                    class="text-danger"
+                    th:if="${#fields.hasErrors('remarks')}"
+                    th:errors="*{remarks}"
+                  >
+                    備考のエラー
+                  </div>
+                </div>
+
+                <div class="col-12 text-center">
+                  <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-plus-circle"></i>新規登録
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- 既存会議室予約カード例 -->
+          <div
+            th:each="reservation : ${reservations}"
+            th:object="${reservation}"
+            class="card mb-3"
+          >
+            <div class="card-body">
+              <h5
+                class="card-title"
+                th:text="'予約会議室:' + *{room.name}"
+              ></h5>
+              <div class="row">
+                <div class="card-text mb-1 col-auto">[['id:' + *{id}]]</div>
+                <div class="card-text mb-2 col-auto">
+                  [['予約ユーザ:' + *{user.name}]]
+                </div>
+                <div class="card-text mb-2 col-auto">
+                  [['利用開始日時:' + *{useFromDatetime}]]
+                </div>
+                <div class="card-text mb-2 col-auto">
+                  [['利用終了日時:' + *{useToDatetime}]]
+                </div>
+                <div class="card-text mb-2 col-auto">
+                  [['tel:' + *{remarks}]]
+                </div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <!-- 編集ボタン -->
+                <button
+                  class="btn btn-secondary reservation-edit-button"
+                  th:data-id="*{id}"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <!-- 削除ボタン -->
+                <button
+                  class="btn btn-danger mx-1 reservation-delete-button"
+                  th:data-id="*{id}"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
     <footer>
-      <ul>
-        <li>トップへ戻る</li>
-        <li>問い合わせ先：管理者のメールアドレス</li>
-      </ul>
+      <script th:src="@{/js/reservation.js}"></script>
     </footer>
   </body>
 </html>
