@@ -149,18 +149,18 @@
               </form>
             </tr>
             <!-- ユーザ一覧 -->
-            <tr th:each="user : ${users}" th:data-id="${user.id}">
-              <td>[[${user.id}]]</td>
-              <td>[[${user.email}]]</td>
+            <tr th:each="user : ${users}" th:object="${user}">
+              <td>[[*{id}]]</td>
+              <td>[[*{email}]]</td>
               <td>*********</td>
-              <td>[[${user.isAdmin ? '◯' : ''}]]</td>
-              <td>[[${user.name}]]</td>
-              <td>[[${user.department}]]</td>
-              <td>[[${user.tel}]]</td>
+              <td>[[*{isAdmin ? '◯' : ''}]]</td>
+              <td>[[*{name}]]</td>
+              <td>[[*{department}]]</td>
+              <td>[[*{tel}]]</td>
               <td>
                 <img
-                  th:if="${user.picture != null}"
-                  th:src="'data:image/jpeg;base64,' + ${user.picture}"
+                  th:if="*{picture != null}"
+                  th:src="'data:image/jpeg;base64,' + *{picture}"
                   alt="プロフィール画像"
                   class="img-thumbnail"
                   style="max-height: 125px"
@@ -171,14 +171,14 @@
                   <!-- 編集ボタン -->
                   <button
                     class="btn btn-secondary mx-1 user-edit-button"
-                    th:data-id="${user.id}"
+                    th:data-id="*{id}"
                   >
                     <i class="bi bi-pencil"></i>
                   </button>
                   <!-- 削除ボタン -->
                   <button
                     class="btn btn-danger mx-1 user-delete-button"
-                    th:data-id="${user.id}"
+                    th:data-id="*{id}"
                   >
                     <i class="bi bi-trash"></i>
                   </button>
@@ -287,47 +287,43 @@
             </div>
           </div>
           <!-- 既存ユーザカード例 -->
-          <div th:each="user : ${users}" class="card mb-3">
+          <div th:each="user : ${users}" class="card mb-3" th:object="${user}">
             <img
-              th:if="${user.picture != null}"
-              th:src="'data:image/jpeg;base64,' + ${user.picture}"
+              th:if="*{picture != null}"
+              th:src="'data:image/jpeg;base64,' + *{picture}"
               alt="プロフィール画像"
               class="card-img-top"
               style="max-width: 200px"
             />
 
             <div class="card-body">
-              <h5 class="card-title" th:text="'名前:' + ${user.name}"></h5>
+              <h5 class="card-title" th:text="'名前:' + *{name}"></h5>
               <div class="row">
+                <div class="card-text mb-1 col-auto">[['id:' + *{id}]]</div>
                 <div class="card-text mb-1 col-auto">
-                  [['id:' + ${user.id}]]
-                </div>
-                <div class="card-text mb-1 col-auto">
-                  [['email:' + ${user.email}]]
+                  [['email:' + *{email}]]
                 </div>
                 <div class="card-text mb-1 col-auto">*********</div>
                 <div class="card-text mb-1 col-auto">
-                  [[${user.isAdmin ? '管理者' : ''}]]
+                  [[*{isAdmin ? '管理者' : ''}]]
                 </div>
                 <div class="card-text mb-1 col-auto">
-                  [['所属:' + ${user.department}]]
+                  [['所属:' + *{department}]]
                 </div>
-                <div class="card-text mb-2 col-auto">
-                  [['tel:' + ${user.tel}]]
-                </div>
+                <div class="card-text mb-2 col-auto">[['tel:' + *{tel}]]</div>
               </div>
               <div class="d-flex justify-content-between">
                 <!-- 編集ボタン -->
                 <button
                   class="btn btn-secondary user-edit-button"
-                  th:data-id="${user.id}"
+                  th:data-id="*{id}"
                 >
                   <i class="bi bi-pencil"></i>
                 </button>
                 <!-- 削除ボタン -->
                 <button
                   class="btn btn-danger mx-1 user-delete-button"
-                  th:data-id="${user.id}"
+                  th:data-id="*{id}"
                 >
                   <i class="bi bi-trash"></i>
                 </button>
