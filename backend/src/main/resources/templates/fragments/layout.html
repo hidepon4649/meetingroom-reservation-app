@@ -3,7 +3,7 @@
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-  th:fragment="base(title, main)"
+  th:fragment="base(title, main, script)"
 >
   <head>
     <meta charset="UTF-8" />
@@ -88,7 +88,7 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"
       ></script>
-      <script th:src="@{/js/meetingroom.js}"></script>
+      <script th:replace="${script}"></script>
     </footer>
   </body>
 </html>
