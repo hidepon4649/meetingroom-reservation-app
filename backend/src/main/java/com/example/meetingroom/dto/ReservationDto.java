@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class ReservationDto {
@@ -27,8 +28,10 @@ public class ReservationDto {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull(message = "利用開始日時は必須です")
     private LocalDateTime useFromDatetime;
 
+    @NotNull(message = "利用終了日時は必須です")
     private LocalDateTime useToDatetime;
 
     @NotBlank(message = "備考は必須です")
