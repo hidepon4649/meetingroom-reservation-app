@@ -66,21 +66,39 @@
                 <td></td>
                 <td>
                   <!-- セレクトボックス、予約会議室 -->
-                  <!-- <div
+                  <select class="form-select" th:field="*{room.id}">
+                    <option value="" disabled selected>会議室を選択</option>
+                    <option
+                      th:each="room : ${rooms}"
+                      th:value="${room.id}"
+                      th:text="${room.name}"
+                    ></option>
+                  </select>
+                  <div
                     class="text-danger"
-                    th:if="${#fields.hasErrors('name')}"
-                    th:errors="*{name}"
+                    th:if="${#fields.hasErrors('room.id')}"
+                    th:errors="*{room.id}"
                   >
-                  </div> -->
+                    会議室の選択エラー
+                  </div>
                 </td>
                 <td>
                   <!-- セレクトボックス、予約ユーザ -->
-                  <!-- <div
+                  <select class="form-select" th:field="*{user.id}">
+                    <option value="" disabled selected>ユーザを選択</option>
+                    <option
+                      th:each="user : ${users}"
+                      th:value="${user.id}"
+                      th:text="${user.name}"
+                    ></option>
+                  </select>
+                  <div
                     class="text-danger"
-                    th:if="${#fields.hasErrors('name')}"
-                    th:errors="*{name}"
+                    th:if="${#fields.hasErrors('user.id')}"
+                    th:errors="*{user.id}"
                   >
-                  </div> -->
+                    ユーザの選択エラー
+                  </div>
                 </td>
                 <td>
                   <!-- カレンダー入力、利用開始日時 -->
