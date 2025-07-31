@@ -163,8 +163,16 @@
               <td>[[*{id}]]</td>
               <td>[[*{room.name}]]</td>
               <td>[[*{user.name}]]</td>
-              <td>[[*{useFromDatetime}]]</td>
-              <td>[[*{useToDatetime}]]</td>
+              <td th:with="useFrom=*{useFromDatetime}">
+                <span
+                  th:text="${#temporals.format(useFrom, 'yyyy/MM/dd(E) HH:mm')}"
+                ></span>
+              </td>
+              <td th:with="useTo=*{useToDatetime}">
+                <span
+                  th:text="${#temporals.format(useTo, 'yyyy/MM/dd(E)HH:mm')}"
+                ></span>
+              </td>
               <td>[[*{remarks}]]</td>
               <td>
                 <div class="d-flex">

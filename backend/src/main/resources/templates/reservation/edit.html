@@ -43,13 +43,17 @@
                   <!-- セレクトボックス、予約ユーザ -->
                   [[*{user.name}]]
                 </td>
-                <td>
+                <td th:with="useFrom=*{useFromDatetime}">
                   <!-- カレンダー入力、利用終了日時 -->
-                  [[*{useFromDatetime}]]
+                  <span
+                    th:text="${#temporals.format(useFrom, 'yyyy/MM/dd(E) HH:mm')}"
+                  ></span>
                 </td>
-                <td>
+                <td th:with="useTo=*{useToDatetime}">
                   <!-- カレンダー入力、利用終了日時 -->
-                  [[*{useToDatetime}]]
+                  <span
+                    th:text="${#temporals.format(useTo, 'yyyy/MM/dd(E)HH:mm')}"
+                  ></span>
                 </td>
                 <td>
                   <input
