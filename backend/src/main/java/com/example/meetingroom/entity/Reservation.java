@@ -15,6 +15,9 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private LocalDateTime useFromDatetime;
+    private LocalDateTime useToDatetime;
+    private String remarks;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -23,10 +26,6 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    private LocalDateTime useFromDatetime;
-    private LocalDateTime useToDatetime;
-    private String remarks;
 
     public Long getId() {
         return id;
