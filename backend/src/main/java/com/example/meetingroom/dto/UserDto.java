@@ -2,9 +2,6 @@ package com.example.meetingroom.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -12,8 +9,6 @@ import jakarta.validation.constraints.Size;
 
 public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "メールアドレスは必須です")

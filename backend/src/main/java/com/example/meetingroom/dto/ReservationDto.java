@@ -5,27 +5,17 @@ import java.time.LocalDateTime;
 import com.example.meetingroom.entity.Room;
 import com.example.meetingroom.entity.User;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class ReservationDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
+    @NotNull
     private Room room;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     @NotNull(message = "利用開始日時は必須です")
