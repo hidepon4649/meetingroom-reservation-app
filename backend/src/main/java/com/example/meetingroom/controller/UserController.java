@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -41,6 +42,7 @@ public class UserController {
         return "user/index";
     }
 
+    @Transactional
     @PostMapping("admin/user")
     public String createUser(
             @Validated @ModelAttribute UserDto userDto,
@@ -79,6 +81,7 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
+    @Transactional
     @PostMapping(value = "/admin/user/{id}", params = "_method=update")
     public String updateUser(@PathVariable Long id,
             @Validated @ModelAttribute UserDto userDto,
@@ -136,6 +139,7 @@ public class UserController {
         return "user/edit";
     }
 
+    @Transactional
     @PostMapping(value = "/admin/user/{id}", params = "_method=delete")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         userService.deleteById(id);
