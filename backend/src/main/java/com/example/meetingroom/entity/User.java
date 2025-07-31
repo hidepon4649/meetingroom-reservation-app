@@ -7,9 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -17,25 +14,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "メールアドレスは必須です")
-    @Email(message = "メールアドレスが不正です")
     private String email;
-
     private boolean isAdmin;
-
-    @NotBlank(message = "名前は必須です")
-    @Size(min = 2, max = 24, message = "名前は{min}文字以上、{max}文字以下です")
     private String name;
-
     private String password;
-
-    @NotBlank(message = "telは必須です")
-    @Size(min = 9, max = 20, message = "telは{min}文字以上、{max}文字以下です")
     private String tel;
-
-    @NotBlank(message = "部署は必須です")
-    @Size(min = 2, max = 255, message = "部署は{min}文字以上、{max}文字以下です")
     private String department;
 
     @Lob

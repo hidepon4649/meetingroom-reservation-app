@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 public class Room {
@@ -13,21 +11,9 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "部屋名称は必須です")
-    @Size(min = 2, max = 255, message = "部屋名称は{min}文字以上、{max}文字以下です")
     private String name;
-
-    @NotBlank(message = "場所は必須です")
-    @Size(min = 2, max = 255, message = "場所は{min}文字以上、{max}文字以下です")
     private String place;
-
-    @NotBlank(message = "telは必須です")
-    @Size(min = 9, max = 20, message = "telは{min}文字以上、{max}文字以下です")
     private String tel;
-
-    @NotBlank(message = "備考は必須です")
-    @Size(min = 2, max = 255, message = "備考は{min}文字以上、{max}文字以下です")
     private String remarks;
 
     public Long getId() {
