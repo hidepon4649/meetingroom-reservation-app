@@ -13,9 +13,9 @@ public class ReservationDto {
 
     private Long id;
 
-    @NotNull
+    @NotNull(message = "予約会議室は必須です")
     private Room room;
-    @NotNull
+    @NotNull(message = "予約ユーザは必須です")
     private User user;
 
     @NotNull(message = "利用開始日時は必須です")
