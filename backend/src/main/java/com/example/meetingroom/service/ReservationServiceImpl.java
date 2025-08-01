@@ -39,4 +39,14 @@ public class ReservationServiceImpl implements ReservationService {
             return new RuntimeException("該当する会議室予約が存在しません:" + id);
         });
     }
+
+    @Override
+    public boolean existsByUserId(Long userId) {
+        return reservationRepository.existsByUserId(userId);
+    }
+
+    @Override
+    public boolean existsByRoomId(Long roomId) {
+        return reservationRepository.existsByRoomId(roomId);
+    }
 }

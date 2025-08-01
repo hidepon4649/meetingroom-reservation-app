@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.UserDto;
 import com.example.meetingroom.entity.User;
+import com.example.meetingroom.service.ReservationService;
 import com.example.meetingroom.service.UserService;
 
 @Controller
@@ -27,10 +28,15 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
+    private final ReservationService reservationService;
+
     private final PasswordEncoder passwordEncoder;
 
-    UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    UserController(UserService userService,
+            ReservationService reservationService,
+            PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.reservationService = reservationService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -142,6 +148,13 @@ public class UserController {
     @Transactional
     @PostMapping(value = "/admin/user/{id}", params = "_method=delete")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        // 予約があるかチェック
+        if (reservationService.existsByUserId(id)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "予約が存在するため、ユーザを削除できません。");
+            return "redirect:/admin/user";
+        }
+
         userService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "ユーザを削除しました。");
         return "redirect:/admin/user";

@@ -12,4 +12,8 @@ public interface ReservationService {
     void save(Reservation reservation);
 
     void deleteById(Long id);
+
+    boolean existsByUserId(Long userId);
+
+    boolean existsByRoomId(Long roomId);
 }

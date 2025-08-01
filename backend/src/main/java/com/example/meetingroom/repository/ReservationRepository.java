@@ -8,4 +8,7 @@ import com.example.meetingroom.entity.Reservation;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
+    boolean existsByRoomId(Long roomId);
+
+    boolean existsByUserId(Long userId);
 }

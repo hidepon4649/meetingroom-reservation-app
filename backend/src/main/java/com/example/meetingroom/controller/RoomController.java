@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.RoomDto;
 import com.example.meetingroom.entity.Room;
+import com.example.meetingroom.service.ReservationService;
 import com.example.meetingroom.service.RoomService;
 
 @Controller
@@ -23,9 +24,12 @@ public class RoomController {
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
 
     private final RoomService roomService;
+    private final ReservationService reservationService;
 
-    RoomController(RoomService roomService) {
+    RoomController(RoomService roomService,
+            ReservationService reservationService) {
         this.roomService = roomService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("admin/room")
@@ -110,6 +114,13 @@ public class RoomController {
     @Transactional
     @PostMapping(value = "/admin/room/{id}", params = "_method=delete")
     public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        // 予約があるかチェック
+        if (reservationService.existsByRoomId(id)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "予約が存在するため、会議室を削除できません。");
+            return "redirect:/admin/room";
+        }
+
         roomService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "会議室を削除しました。");
         return "redirect:/admin/room";
