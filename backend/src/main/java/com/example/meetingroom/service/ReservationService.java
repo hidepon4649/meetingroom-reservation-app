@@ -16,4 +16,6 @@ public interface ReservationService {
     boolean existsByUserId(Long userId);
 
     boolean existsByRoomId(Long roomId);
+
+    List<Reservation> getReservationsByYearMonth(int year, int month);
 }

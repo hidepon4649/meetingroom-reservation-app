@@ -1,5 +1,7 @@
 package com.example.meetingroom.service;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -48,5 +50,13 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean existsByRoomId(Long roomId) {
         return reservationRepository.existsByRoomId(roomId);
+    }
+
+    @Override
+    public List<Reservation> getReservationsByYearMonth(int year, int month) {
+        YearMonth ym = YearMonth.of(year, month);
+        LocalDateTime start = ym.atDay(1).atStartOfDay(); // 1日0時
+        LocalDateTime end = ym.atEndOfMonth().atTime(23, 59, 59); // 月末23:59:59
+        return reservationRepository.findByUseFromDatetimeBetween(start, end);
     }
 }

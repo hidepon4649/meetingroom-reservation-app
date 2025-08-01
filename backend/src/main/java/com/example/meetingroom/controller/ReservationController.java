@@ -1,5 +1,12 @@
 package com.example.meetingroom.controller;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -106,6 +113,49 @@ public class ReservationController {
         reservationService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "会議室予約を削除しました。");
         return "redirect:/reservation";
+    }
+
+    @GetMapping("reservation/calendar")
+    public String calendarViewThisMonth(Model model) {
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        int month = today.getMonthValue(); // 1〜12の数値
+        return this.calendarView(year, month, model);
+    }
+
+    @GetMapping("reservation/calendar/{year}/{month}")
+    public String calendarView(
+            @PathVariable int year,
+            @PathVariable int month,
+            Model model) {
+
+        YearMonth yearMonth;
+        try {
+            yearMonth = YearMonth.of(year, month);
+        } catch (DateTimeException e) {
+            // 不正な年月は今月にフォールバック
+            yearMonth = YearMonth.now();
+        }
+
+        LocalDate firstDay = yearMonth.atDay(1);
+        LocalDate lastDay = yearMonth.atEndOfMonth();
+
+        // 対象年月を絞ってデータ取得
+        List<Reservation> reservations = reservationService.getReservationsByYearMonth(year, month);
+
+        Map<LocalDate, List<Reservation>> reservationMap = reservations.stream()
+                .filter(r -> r.getUseFromDatetime() != null)
+                .map(r -> Map.entry(r, r.getUseFromDatetime().toLocalDate()))
+                .filter(e -> !e.getValue().isBefore(firstDay) && !e.getValue().isAfter(lastDay))
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getValue,
+                        Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
+
+        model.addAttribute("yearMonth", yearMonth);
+        model.addAttribute("firstDay", firstDay);
+        model.addAttribute("reservationMap", reservationMap);
+
+        return "reservation/calendar";
     }
 
 }
