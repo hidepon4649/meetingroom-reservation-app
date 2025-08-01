@@ -26,6 +26,6 @@ CREATE TABLE IF NOT EXISTS reservation (
     use_from_datetime DATETIME NOT NULL,
     use_to_datetime DATETIME NOT NULL,
     remarks VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE,
-    FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE RESTRICT,
+    FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE RESTRICT
 );
