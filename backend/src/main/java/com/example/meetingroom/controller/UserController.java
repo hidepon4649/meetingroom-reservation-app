@@ -114,7 +114,7 @@ public class UserController {
         userService.save(user);
 
         // トースト表示用に成功メッセージをフラッシュスコープに保存
-        redirectAttributes.addFlashAttribute("successMessage", "ユーザーを編集しました。");
+        redirectAttributes.addFlashAttribute("successMessage", "ユーザを編集しました。");
 
         return "redirect:/admin/user";
     }
@@ -143,7 +143,7 @@ public class UserController {
     @PostMapping(value = "/admin/user/{id}", params = "_method=delete")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         userService.deleteById(id);
-        redirectAttributes.addFlashAttribute("successMessage", "ユーザーを削除しました。");
+        redirectAttributes.addFlashAttribute("successMessage", "ユーザを削除しました。");
         return "redirect:/admin/user";
     }
 

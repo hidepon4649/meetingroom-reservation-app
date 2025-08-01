@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // ログイン用のメソッド
     Optional<User> findByEmailAndPassword(String email, String password);
 
-    // メールアドレスからユーザーを取得するメソッド
+    // メールアドレスからユーザを取得するメソッド
     Optional<User> findByEmail(String email);
 
 }
