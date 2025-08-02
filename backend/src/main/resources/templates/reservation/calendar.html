@@ -9,6 +9,24 @@
   </head>
   <body>
     <main>
+      <!-- デバッグ出力 ここから -->
+      <!-- <div class="container mt-5">
+        <h5>DEBUG: reservationMap Dump</h5>
+        <ul class="small">
+          <li th:each="entry : ${reservationMap}">
+            <span th:text="${entry.key}"></span> :
+            <ul>
+              <li th:each="res : ${entry.value}">
+                <span
+                  th:text="'[' + ${res.id} + '] ' + ${res.room.name} + '/' + ${res.user.name}"
+                ></span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div> -->
+      <!-- デバッグ出力 ここまで -->
+
       <!-- 年月切替ナビ -->
       <div class="d-flex justify-content-between mb-2">
         <a
@@ -40,12 +58,13 @@
         <div
           th:with="firstDay=${yearMonth.atDay(1)}, dayOfWeekValue=${firstDay.dayOfWeek.value}, calendarStart=${firstDay.minusDays(dayOfWeekValue % 7)}"
         >
+          <!-- /* 要注意、マップにアクセスする際は、obj.get(キー)で呼び出せ。obj['キー']とすると日付評価が空振りする。 */ -->
           <div th:each="week : ${#numbers.sequence(0,5)}" class="row g-2 mb-1">
             <div
               th:each="dow : ${#numbers.sequence(0,6)}"
               class="col border p-2"
               style="min-height: 100px"
-              th:with="date=${calendarStart.plusDays(week * 7 + dow)}"
+              th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())}"
               th:classappend="${date.equals(T(java.time.LocalDate).now())} ? 'border-primary border-3' : ''"
             >
               <!-- 日付ラベル -->
@@ -56,9 +75,9 @@
               ></div>
 
               <!-- 予約表示 -->
-              <div th:if="${reservationMap.containsKey(date)}">
+              <div th:if="${resList != null}">
                 <ul class="list-unstyled mb-0 small">
-                  <li th:each="res : ${reservationMap[date]}">
+                  <li th:each="res : ${resList}">
                     <a
                       th:href="@{/reservation/{id}(id=${res.id})}"
                       class="badge bg-info text-dark d-block text-start mb-1"

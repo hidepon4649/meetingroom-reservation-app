@@ -143,12 +143,12 @@ public class ReservationController {
         // 対象年月を絞ってデータ取得
         List<Reservation> reservations = reservationService.getReservationsByYearMonth(year, month);
 
-        Map<LocalDate, List<Reservation>> reservationMap = reservations.stream()
+        Map<String, List<Reservation>> reservationMap = reservations.stream()
                 .filter(r -> r.getUseFromDatetime() != null)
                 .map(r -> Map.entry(r, r.getUseFromDatetime().toLocalDate()))
                 .filter(e -> !e.getValue().isBefore(firstDay) && !e.getValue().isAfter(lastDay))
                 .collect(Collectors.groupingBy(
-                        Map.Entry::getValue,
+                        e -> e.getValue().toString(), // LocalDate -> "yyyy-MM-dd" 文字列に
                         Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
 
         model.addAttribute("yearMonth", yearMonth);
