@@ -3,7 +3,6 @@ package com.example.meetingroom.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +38,6 @@ public class RoomController {
         return "room/index";
     }
 
-    @Transactional
     @PostMapping("admin/room")
     public String createRoom(
             @Validated @ModelAttribute RoomDto roomDto,
@@ -66,7 +64,6 @@ public class RoomController {
         return "redirect:/admin/room";
     }
 
-    @Transactional
     @PostMapping(value = "/admin/room/{id}", params = "_method=update")
     public String updateRoom(@PathVariable Long id,
             @Validated @ModelAttribute RoomDto roomDto,
@@ -111,7 +108,6 @@ public class RoomController {
         return "room/edit";
     }
 
-    @Transactional
     @PostMapping(value = "/admin/room/{id}", params = "_method=delete")
     public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 

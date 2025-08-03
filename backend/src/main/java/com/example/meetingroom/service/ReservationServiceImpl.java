@@ -5,6 +5,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.meetingroom.entity.Reservation;
 import com.example.meetingroom.repository.ReservationRepository;
@@ -24,12 +25,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
     public void save(Reservation reservation) {
         reservationRepository.save(reservation);
         return;
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         reservationRepository.deleteById(id);
         return;

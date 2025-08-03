@@ -3,6 +3,7 @@ package com.example.meetingroom.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.meetingroom.entity.User;
 import com.example.meetingroom.repository.UserRepository;
@@ -24,12 +25,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void save(User user) {
         userRepository.save(user);
         return;
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         userRepository.deleteById(id);
         return;

@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -56,7 +55,6 @@ public class ReservationController {
         return "reservation/index";
     }
 
-    @Transactional
     @PostMapping("reservation")
     public String createReservation(
             @Validated @ModelAttribute ReservationDto reservationDto,
@@ -107,7 +105,6 @@ public class ReservationController {
         return "reservation/edit";
     }
 
-    @Transactional
     @PostMapping(value = "/reservation/{id}", params = "_method=delete")
     public String deleteReservation(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         reservationService.deleteById(id);

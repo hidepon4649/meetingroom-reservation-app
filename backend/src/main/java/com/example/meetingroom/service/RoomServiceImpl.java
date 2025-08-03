@@ -3,6 +3,7 @@ package com.example.meetingroom.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.meetingroom.entity.Room;
 import com.example.meetingroom.repository.RoomRepository;
@@ -22,12 +23,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public void save(Room room) {
         roomRepository.save(room);
         return;
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         roomRepository.deleteById(id);
         return;
