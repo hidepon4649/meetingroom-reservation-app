@@ -98,7 +98,11 @@
     >
       <div class="container">
         <ul>
-          <li><i class="bi bi-house"></i>：トップへ戻る</li>
+          <li>
+            <i class="bi bi-house">
+              <a th:href="@{/}">：トップへ戻る</a>
+            </i>
+          </li>
           <li><i class="bi bi-envelope-at"></i>：管理者のメールアドレス</li>
           <li>
             <form th:action="@{/logout}" method="post">
