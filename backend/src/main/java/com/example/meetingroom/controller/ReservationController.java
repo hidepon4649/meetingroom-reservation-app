@@ -86,6 +86,36 @@ public class ReservationController {
         return "redirect:/reservation";
     }
 
+    @PostMapping(value = "/reservation/{id}", params = "_method=update")
+    public String updateReservation(@PathVariable Long id,
+            @Validated @ModelAttribute ReservationDto reservationDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("rooms", roomService.getAllRooms());
+            model.addAttribute("users", userService.getAllUsers());
+            return "reservation/edit";
+        }
+
+        Reservation reservation = new Reservation();
+        reservation.setId(reservationDto.getId());
+        reservation.setRoom(reservationDto.getRoom());
+        reservation.setUser(reservationDto.getUser());
+        reservation.setUseFromDatetime(reservationDto.getUseFromDatetime());
+        reservation.setUseToDatetime(reservationDto.getUseToDatetime());
+        reservation.setRemarks(reservationDto.getRemarks());
+
+        reservationService.save(reservation);
+
+        // トースト表示用に成功メッセージをフラッシュスコープに保存
+        redirectAttributes.addFlashAttribute("successMessage", "会議室予約を編集しました。");
+
+        return "redirect:/reservation";
+
+    }
+
     @GetMapping(value = "/reservation/{id}")
     public String updateReservation(@PathVariable Long id,
             Model model) {
@@ -101,6 +131,8 @@ public class ReservationController {
         reservationDto.setRemarks(reservation.getRemarks());
 
         model.addAttribute("reservationDto", reservationDto);
+        model.addAttribute("rooms", roomService.getAllRooms());
+        model.addAttribute("users", userService.getAllUsers());
 
         return "reservation/edit";
     }
