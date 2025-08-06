@@ -42,7 +42,7 @@
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/hidepon4649/🔴🔴🔴🔴🔴🔴.git
+git clone https://github.com/hidepon4649/meetingroom-reservation-app.git
 ```
 
 ## アプリケーション起動手順
