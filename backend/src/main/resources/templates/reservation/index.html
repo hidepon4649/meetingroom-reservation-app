@@ -154,7 +154,11 @@
               </td>
               <td>[[*{remarks}]]</td>
               <td>
-                <div class="d-flex">
+                <!-- 編集・削除ボタンは管理者または自分の予約のみ表示 -->
+                <div
+                  class="d-flex"
+                  th:if="${isAdmin} or ${reservation.user.id} == ${loginUserId}"
+                >
                   <!-- 編集ボタン -->
                   <button
                     class="btn btn-secondary mx-1 reservation-edit-button"
@@ -295,7 +299,10 @@
                   [['tel:' + *{remarks}]]
                 </div>
               </div>
-              <div class="d-flex justify-content-between">
+              <div
+                class="d-flex justify-content-between"
+                th:if="${isAdmin} or ${reservation.user.id} == ${loginUserId}"
+              >
                 <!-- 編集ボタン -->
                 <button
                   class="btn btn-secondary reservation-edit-button"

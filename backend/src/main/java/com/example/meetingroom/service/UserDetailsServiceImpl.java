@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.meetingroom.model.CustomUserDetails;
 import com.example.meetingroom.model.Role;
 import com.example.meetingroom.repository.UserRepository;
 
@@ -32,13 +33,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.example.meetingroom.entity.User userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("認証失敗です。：" + email));
 
-        UserDetails userDetails = org.springframework.security.core.userdetails.User
-                .withUsername(userEntity.getEmail())
-                .password(userEntity.getPassword())
-                .authorities(getAuthorities(userEntity.isAdmin()))
-                .build();
-
-        return userDetails;
+        return new CustomUserDetails(
+                userEntity.getId(),
+                userEntity.getEmail(),
+                userEntity.getPassword(),
+                getAuthorities(userEntity.isAdmin()));
 
     }
 
