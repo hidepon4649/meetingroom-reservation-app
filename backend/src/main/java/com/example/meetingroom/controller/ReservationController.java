@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.ReservationDto;
 import com.example.meetingroom.entity.Reservation;
+import com.example.meetingroom.entity.User;
 import com.example.meetingroom.service.ReservationService;
 import com.example.meetingroom.service.RoomService;
 import com.example.meetingroom.service.UserService;
@@ -44,11 +45,21 @@ public class ReservationController {
     }
 
     @GetMapping("reservation")
-    public String index(Model model) {
+    public String index(Model model,
+            @ModelAttribute("loginUserId") Long loginUserId,
+            @ModelAttribute("isAdmin") Boolean isAdmin) {
+
+        ReservationDto reservationDto = new ReservationDto();
+
+        // 一般ユーザは自分の予約のみ表示。自分のidで予約ユーザを固定
+        if (Boolean.FALSE.equals(isAdmin)) {
+            User userEntity = new User();
+            userEntity.setId(loginUserId);
+            reservationDto.setUser(userEntity);
+        }
 
         model.addAttribute("reservations", reservationService.getAllReservations());
-        model.addAttribute("reservationDto", new ReservationDto());
-
+        model.addAttribute("reservationDto", reservationDto);
         model.addAttribute("rooms", roomService.getAllRooms());
         model.addAttribute("users", userService.getAllUsers());
 
@@ -61,6 +72,15 @@ public class ReservationController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             Model model) {
+
+        // 管理者かどうか確認
+        final Boolean isAdmin = (Boolean) model.getAttribute("isAdmin");
+        final Long loginUserId = (Long) model.getAttribute("loginUserId");
+
+        // 一般ユーザは他人の予約を作成できないよう制限
+        if (!isAdmin && !loginUserId.equals(reservationDto.getUser().getId())) {
+            bindingResult.rejectValue("user.id", "invalid.user", "他のユーザの予約は作成できません");
+        }
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("reservations", reservationService.getAllReservations()); // 再表示用

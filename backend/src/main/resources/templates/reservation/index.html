@@ -61,14 +61,23 @@
                   </div>
                 </td>
                 <td>
-                  <select class="form-select" th:field="*{user.id}">
-                    <option value="" disabled selected>ユーザを選択</option>
+                  <!-- 管理者のみユーザ選択可能。一般ユーザは自分固定。 -->
+                  <select
+                    th:if="${isAdmin}"
+                    class="form-select"
+                    th:field="*{user.id}"
+                  >
+                    <option value="" disabled>ユーザを選択</option>
                     <option
                       th:each="user : ${users}"
                       th:value="${user.id}"
                       th:text="${user.name}"
                     ></option>
                   </select>
+                  <div th:unless="${isAdmin}">
+                    <span th:text="${loginUser.name}">ユーザ名</span>
+                    <input type="hidden" th:field="*{user.id}" />
+                  </div>
                   <div
                     class="text-danger"
                     th:if="${#fields.hasErrors('user.id')}"
