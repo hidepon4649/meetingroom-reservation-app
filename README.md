@@ -55,8 +55,10 @@ docker compose up -d
 
 # ブラウザから下記URL
 http://localhost:8080/login
-# 初期管理ユーザ id/pw
+# 管理ユーザ id/pw
 admin@example.com/password
+# 一般ユーザ id/pw
+user1@example.com/password
 ```
 
 <!--
