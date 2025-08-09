@@ -139,51 +139,70 @@
         </table>
         <!-- カード型（スマホ用） -->
         <div class="user-card-list">
-          <!-- 新規追加カード -->
+          <!-- 予約編集 -->
           <div class="card mb-2">
             <div class="card-body">
               <form
+                id="editForm"
                 class="row g-2"
-                th:action="@{/reservation}"
+                th:action="@{/reservation/{id}(id=${reservationDto.id})}"
                 method="post"
                 th:object="${reservationDto}"
               >
+                <input type="hidden" name="_method" value="update" />
                 <div class="col-12">
                   <label class="form-label">予約会議室</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    th:field="*{room.name}"
-                  />
+                  <select class="form-select" th:field="*{room.id}">
+                    <option value="" disabled selected>会議室を選択</option>
+                    <option
+                      th:each="room : ${rooms}"
+                      th:value="${room.id}"
+                      th:text="${room.name}"
+                    ></option>
+                  </select>
                   <div
                     class="text-danger"
-                    th:if="${#fields.hasErrors('room.name')}"
-                    th:errors="*{room.name}"
+                    th:if="${#fields.hasErrors('room.id')}"
+                    th:errors="*{room.id}"
                   >
-                    予約会議室のエラー
+                    会議室の選択エラー
                   </div>
                 </div>
+                <!-- 管理者のみユーザ選択可能。一般ユーザは自分固定。 -->
                 <div class="col-12">
                   <label class="form-label">予約ユーザ</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    th:field="*{user.name}"
-                  />
+                  <div th:if="${isAdmin}">
+                    <select class="form-select" th:field="*{user.id}">
+                      <option value="" disabled>ユーザを選択</option>
+                      <option
+                        th:each="user : ${users}"
+                        th:value="${user.id}"
+                        th:text="${user.name}"
+                      ></option>
+                    </select>
+                  </div>
+                  <div th:unless="${isAdmin}" class="col-12">
+                    <span class="mx-3" th:text="${loginUser.name}"
+                      >ユーザ名</span
+                    >
+                    <input type="hidden" th:field="*{user.id}" />
+                  </div>
                   <div
                     class="text-danger"
-                    th:if="${#fields.hasErrors('user.name')}"
-                    th:errors="*{user.name}"
+                    th:if="${#fields.hasErrors('user.id')}"
+                    th:errors="*{user.id}"
                   >
                     予約ユーザのエラー
                   </div>
                 </div>
-                <div class="col-12">
+                <!-- カレンダー入力、利用開始日時 -->
+                <div class="col-12" th:with="useFrom=*{useFromDatetime}">
                   <label class="form-label">利用開始日時</label>
                   <input
+                    type="datetime-local"
                     class="form-control"
-                    type="text"
-                    th:field="*{useFromDatetime}"
+                    name="useFromDatetime"
+                    th:value="${#temporals.format(reservationDto.useFromDatetime, 'yyyy-MM-dd') + 'T' + #temporals.format(reservationDto.useFromDatetime, 'HH:mm')}"
                   />
                   <div
                     class="text-danger"
@@ -193,12 +212,14 @@
                     利用開始日時のエラー
                   </div>
                 </div>
-                <div class="col-12">
+                <!-- カレンダー入力、利用終了日時 -->
+                <div class="col-12" th:with="useTo=*{useToDatetime}">
                   <label class="form-label">利用終了日時</label>
                   <input
+                    type="datetime-local"
                     class="form-control"
-                    type="text"
-                    th:field="*{useToDatetime}"
+                    name="useToDatetime"
+                    th:value="${#temporals.format(reservationDto.useToDatetime, 'yyyy-MM-dd') + 'T' + #temporals.format(reservationDto.useToDatetime, 'HH:mm')}"
                   />
                   <div
                     class="text-danger"
@@ -224,9 +245,14 @@
                   </div>
                 </div>
 
-                <div class="col-12 text-center">
-                  <button class="btn btn-primary" type="submit">
-                    <i class="bi bi-plus-circle"></i>新規登録
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-save btn-success mx-1" type="submit">
+                    保存
+                  </button>
+                  <button
+                    class="btn reservation-cancel-button btn-secondary mx-1"
+                  >
+                    取消
                   </button>
                 </div>
               </form>
