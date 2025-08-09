@@ -200,39 +200,55 @@
               >
                 <div class="col-12">
                   <label class="form-label">予約会議室</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    th:field="*{room.name}"
-                  />
+                  <select class="form-select" th:field="*{room.id}">
+                    <option value="" disabled selected>会議室を選択</option>
+                    <option
+                      th:each="room : ${rooms}"
+                      th:value="${room.id}"
+                      th:text="${room.name}"
+                    ></option>
+                  </select>
                   <div
                     class="text-danger"
-                    th:if="${#fields.hasErrors('room.name')}"
-                    th:errors="*{room.name}"
+                    th:if="${#fields.hasErrors('room.id')}"
+                    th:errors="*{room.id}"
                   >
-                    予約会議室のエラー
+                    会議室の選択エラー
                   </div>
                 </div>
+                <!-- 管理者のみユーザ選択可能。一般ユーザは自分固定。 -->
                 <div class="col-12">
                   <label class="form-label">予約ユーザ</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    th:field="*{user.name}"
-                  />
+                  <div th:if="${isAdmin}">
+                    <select class="form-select" th:field="*{user.id}">
+                      <option value="" disabled>ユーザを選択</option>
+                      <option
+                        th:each="user : ${users}"
+                        th:value="${user.id}"
+                        th:text="${user.name}"
+                      ></option>
+                    </select>
+                  </div>
+                  <div th:unless="${isAdmin}" class="col-12">
+                    <span class="mx-3" th:text="${loginUser.name}"
+                      >ユーザ名</span
+                    >
+                    <input type="hidden" th:field="*{user.id}" />
+                  </div>
                   <div
                     class="text-danger"
-                    th:if="${#fields.hasErrors('user.name')}"
-                    th:errors="*{user.name}"
+                    th:if="${#fields.hasErrors('user.id')}"
+                    th:errors="*{user.id}"
                   >
                     予約ユーザのエラー
                   </div>
                 </div>
+                <!-- カレンダー入力、利用開始日時 -->
                 <div class="col-12">
                   <label class="form-label">利用開始日時</label>
                   <input
+                    type="datetime-local"
                     class="form-control"
-                    type="text"
                     th:field="*{useFromDatetime}"
                   />
                   <div
@@ -243,11 +259,12 @@
                     利用開始日時のエラー
                   </div>
                 </div>
+                <!-- カレンダー入力、利用終了日時 -->
                 <div class="col-12">
                   <label class="form-label">利用終了日時</label>
                   <input
+                    type="datetime-local"
                     class="form-control"
-                    type="text"
                     th:field="*{useToDatetime}"
                   />
                   <div
@@ -298,23 +315,29 @@
                 <div class="card-text mb-2 col-auto">
                   [['予約ユーザ:' + *{user.name}]]
                 </div>
-                <div class="card-text mb-2 col-auto">
-                  [['利用開始日時:' + *{useFromDatetime}]]
+              </div>
+              <div class="row">
+                <div
+                  class="card-text mb-2 col-auto"
+                  th:with="useFrom=*{useFromDatetime},useTo=*{useToDatetime}"
+                >
+                  <span
+                    th:text="'利用日時: ' + ${#temporals.format(useFrom, 'yyyy/MM/dd(E) HH:mm')} + '〜' + ${#temporals.format(useTo, 'yyyy/MM/dd(E) HH:mm')}"
+                  ></span>
                 </div>
+              </div>
+              <div class="row">
                 <div class="card-text mb-2 col-auto">
-                  [['利用終了日時:' + *{useToDatetime}]]
-                </div>
-                <div class="card-text mb-2 col-auto">
-                  [['tel:' + *{remarks}]]
+                  [['備考:' + *{remarks}]]
                 </div>
               </div>
               <div
-                class="d-flex justify-content-between"
+                class="d-flex justify-content-end"
                 th:if="${isAdmin} or ${reservation.user.id} == ${loginUserId}"
               >
                 <!-- 編集ボタン -->
                 <button
-                  class="btn btn-secondary reservation-edit-button"
+                  class="btn btn-secondary mx-1 reservation-edit-button"
                   th:data-id="*{id}"
                 >
                   <i class="bi bi-pencil"></i>
