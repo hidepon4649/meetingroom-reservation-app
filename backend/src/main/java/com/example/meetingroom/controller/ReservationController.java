@@ -113,6 +113,15 @@ public class ReservationController {
             RedirectAttributes redirectAttributes,
             Model model) {
 
+        // 管理者かどうか確認
+        final Boolean isAdmin = (Boolean) model.getAttribute("isAdmin");
+        final Long loginUserId = (Long) model.getAttribute("loginUserId");
+
+        // 一般ユーザは他人の予約を作成できないよう制限
+        if (!isAdmin && !loginUserId.equals(reservationDto.getUser().getId())) {
+            bindingResult.rejectValue("user.id", "invalid.user", "他のユーザの予約は作成できません");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("rooms", roomService.getAllRooms());
             model.addAttribute("users", userService.getAllUsers());
