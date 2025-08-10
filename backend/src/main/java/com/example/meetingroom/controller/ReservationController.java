@@ -82,6 +82,14 @@ public class ReservationController {
             bindingResult.rejectValue("user.id", "invalid.user", "他のユーザの予約は作成できません");
         }
 
+        // 時間帯の重複チェック
+        if (reservationService.existsOverlapForInsert(
+                reservationDto.getRoom().getId(),
+                reservationDto.getUseFromDatetime(),
+                reservationDto.getUseToDatetime())) {
+            bindingResult.rejectValue("useFromDatetime", "overlap.time", "指定された時間帯は既に予約されています");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("reservations", reservationService.getAllReservations()); // 再表示用
             model.addAttribute("rooms", roomService.getAllRooms());
@@ -120,6 +128,15 @@ public class ReservationController {
         // 一般ユーザは他人の予約を作成できないよう制限
         if (!isAdmin && !loginUserId.equals(reservationDto.getUser().getId())) {
             bindingResult.rejectValue("user.id", "invalid.user", "他のユーザの予約は作成できません");
+        }
+
+        // 時間帯の重複チェック
+        if (reservationService.existsOverlapForUpdate(
+                reservationDto.getRoom().getId(),
+                reservationDto.getId(),
+                reservationDto.getUseFromDatetime(),
+                reservationDto.getUseToDatetime())) {
+            bindingResult.rejectValue("useFromDatetime", "overlap.time", "指定された時間帯は既に予約されています");
         }
 
         if (bindingResult.hasErrors()) {

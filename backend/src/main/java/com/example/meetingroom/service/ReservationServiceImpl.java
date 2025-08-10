@@ -62,4 +62,14 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDateTime end = ym.atEndOfMonth().atTime(23, 59, 59); // 月末23:59:59
         return reservationRepository.findByUseFromDatetimeBetween(start, end);
     }
+
+    @Override
+    public boolean existsOverlapForInsert(Long roomId, LocalDateTime newFrom, LocalDateTime newTo) {
+        return reservationRepository.existsOverlapForInsert(roomId, newFrom, newTo);
+    }
+
+    @Override
+    public boolean existsOverlapForUpdate(Long roomId, Long reservationId, LocalDateTime newFrom, LocalDateTime newTo) {
+        return reservationRepository.existsOverlapForUpdate(roomId, reservationId, newFrom, newTo);
+    }
 }
