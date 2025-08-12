@@ -75,8 +75,7 @@ public class RoomController {
             return "room/edit";
         }
 
-        Room room = new Room();
-        room.setId(roomDto.getId());
+        Room room = roomService.findById(id);
         room.setName(roomDto.getName());
         room.setPlace(roomDto.getPlace());
         room.setTel(roomDto.getTel());
