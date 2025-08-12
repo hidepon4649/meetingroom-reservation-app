@@ -93,11 +93,12 @@ public class UserController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
+            // 画像がある場合は、再表示用にモデルに追加
+            model.addAttribute("userPicture", userService.findById(id).getPicture());
             return "user/edit";
         }
 
-        User user = new User();
-        user.setId(userDto.getId());
+        User user = userService.findById(id);
         user.setEmail(userDto.getEmail());
         user.setAdmin(userDto.isAdmin());
         user.setName(userDto.getName());
@@ -105,6 +106,7 @@ public class UserController {
         user.setTel(userDto.getTel());
         user.setDepartment(userDto.getDepartment());
 
+        // 新たな画像がアップロードされた場合だけ上書き
         MultipartFile picture = userDto.getPicture();
         if (picture != null && !picture.isEmpty()) {
             try {
@@ -138,6 +140,7 @@ public class UserController {
         userDto.setDepartment(user.getDepartment());
 
         model.addAttribute("userDto", userDto);
+        model.addAttribute("userPicture", user.getPicture());
 
         return "user/edit";
     }

@@ -108,6 +108,13 @@
                   </div>
                 </td>
                 <td>
+                  <img
+                    th:if="${userPicture}"
+                    th:src="'data:image/jpeg;base64,' + ${userPicture}"
+                    alt="プロフィール画像"
+                    class="img-thumbnail"
+                    style="max-width: 100px"
+                  />
                   <input class="form-control" type="file" name="picture" />
                 </td>
                 <td>
@@ -128,6 +135,14 @@
         <div class="user-card-list">
           <!-- ユーザ編集 -->
           <div class="card mb-2">
+            <img
+              th:if="${userPicture != null}"
+              th:src="'data:image/jpeg;base64,' + ${userPicture}"
+              alt="プロフィール画像"
+              class="card-img-top"
+              style="max-width: 100px"
+            />
+
             <div class="card-body">
               <form
                 id="editForm"
