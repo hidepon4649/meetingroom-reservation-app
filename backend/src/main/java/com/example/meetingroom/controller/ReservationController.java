@@ -145,8 +145,7 @@ public class ReservationController {
             return "reservation/edit";
         }
 
-        Reservation reservation = new Reservation();
-        reservation.setId(reservationDto.getId());
+        Reservation reservation = reservationService.findById(id);
         reservation.setRoom(reservationDto.getRoom());
         reservation.setUser(reservationDto.getUser());
         reservation.setUseFromDatetime(reservationDto.getUseFromDatetime());
