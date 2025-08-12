@@ -123,7 +123,7 @@
                 </td>
               </form>
             </tr>
-            <!-- ユーザ覧 -->
+            <!-- ユーザ一覧 -->
             <tr th:each="user : ${users}" th:object="${user}">
               <td>[[*{id}]]</td>
               <td>[[*{email}]]</td>
@@ -138,7 +138,7 @@
                   th:src="'data:image/jpeg;base64,' + *{picture}"
                   alt="プロフィール画像"
                   class="img-thumbnail"
-                  style="max-height: 125px"
+                  style="max-width: 100px"
                 />
               </td>
               <td>
@@ -268,7 +268,7 @@
               th:src="'data:image/jpeg;base64,' + *{picture}"
               alt="プロフィール画像"
               class="card-img-top"
-              style="max-width: 200px"
+              style="max-width: 100px"
             />
 
             <div class="card-body">
@@ -287,10 +287,10 @@
                 </div>
                 <div class="card-text mb-2 col-auto">[['tel:' + *{tel}]]</div>
               </div>
-              <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-end">
                 <!-- 編集ボタン -->
                 <button
-                  class="btn btn-secondary user-edit-button"
+                  class="btn btn-secondary mx-1 user-edit-button"
                   th:data-id="*{id}"
                 >
                   <i class="bi bi-pencil"></i>
