@@ -2,7 +2,9 @@ package com.example.meetingroom.controller;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,6 +59,37 @@ public class ReservationController {
             userEntity.setId(loginUserId);
             reservationDto.setUser(userEntity);
         }
+
+        model.addAttribute("reservations", reservationService.getAllReservations());
+        model.addAttribute("reservationDto", reservationDto);
+        model.addAttribute("rooms", roomService.getAllRooms());
+        model.addAttribute("users", userService.getAllUsers());
+
+        return "reservation/index";
+    }
+
+    @GetMapping("reservation/date/{yyyyMMdd}")
+    public String createReservationByDate(@PathVariable String yyyyMMdd,
+            Model model,
+            @ModelAttribute("loginUserId") Long loginUserId,
+            @ModelAttribute("isAdmin") Boolean isAdmin) {
+
+        ReservationDto reservationDto = new ReservationDto();
+
+        // 一般ユーザは自分の予約のみ表示。自分のidで予約ユーザを固定
+        if (Boolean.FALSE.equals(isAdmin)) {
+            User userEntity = new User();
+            userEntity.setId(loginUserId);
+            reservationDto.setUser(userEntity);
+        }
+
+        // 選択された日付を初期設定
+        LocalDateTime dateTime = LocalDateTime.parse(
+                yyyyMMdd + "000000",
+                DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        reservationDto.setUseFromDatetime(dateTime);
+        reservationDto.setUseToDatetime(dateTime);
 
         model.addAttribute("reservations", reservationService.getAllReservations());
         model.addAttribute("reservationDto", reservationDto);

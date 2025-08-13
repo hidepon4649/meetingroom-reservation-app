@@ -64,15 +64,25 @@
               th:each="dow : ${#numbers.sequence(0,6)}"
               class="col border p-2"
               style="min-height: 100px"
-              th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())}"
+              th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())},formatter=${T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')},dateStr=${date.format(formatter)}"
               th:classappend="${date.equals(T(java.time.LocalDate).now())} ? 'border-primary border-3' : ''"
             >
-              <!-- 日付ラベル -->
-              <!-- /* 要注意、th:classappendの中身を改行したらエラーになる。*/ -->
-              <div
-                th:text="${date.dayOfMonth} + '日'"
-                th:classappend="|${(date.month != yearMonth.month) ? 'text-muted' : 'fw-bold'} ${(date.dayOfWeek.value == 7) ? ' text-danger' : ''} ${(date.dayOfWeek.value == 6) ? ' text-primary' : ''}|"
-              ></div>
+              <div class="d-flex align-items-center mb-2">
+                <!-- 日付ラベル -->
+                <!-- /* 要注意、th:classappendの中身を改行したらエラーになる。*/ -->
+                <div
+                  th:text="${date.dayOfMonth} + '日'"
+                  th:classappend="|${(date.month != yearMonth.month) ? 'text-muted' : 'fw-bold'} ${(date.dayOfWeek.value == 7) ? ' text-danger' : ''} ${(date.dayOfWeek.value == 6) ? ' text-primary' : ''}|"
+                ></div>
+                <div>
+                  <a
+                    class="btn btn-sm mx-1"
+                    th:href="@{/reservation/date/{yyyyMMdd}(yyyyMMdd=${dateStr})}"
+                  >
+                    <i class="bi bi-plus-circle"></i>
+                  </a>
+                </div>
+              </div>
 
               <!-- 予約表示 -->
               <div th:if="${resList != null}">

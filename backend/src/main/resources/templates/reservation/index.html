@@ -92,7 +92,8 @@
                     <input
                       type="datetime-local"
                       class="form-control"
-                      th:field="*{useFromDatetime}"
+                      name="useFromDatetime"
+                      th:value="${#temporals.format(reservationDto.useFromDatetime, 'yyyy-MM-dd') + 'T' + #temporals.format(reservationDto.useFromDatetime, 'HH:mm')}"
                     />
                     <div
                       class="text-danger"
@@ -109,7 +110,8 @@
                     <input
                       type="datetime-local"
                       class="form-control"
-                      th:field="*{useToDatetime}"
+                      name="useToDatetime"
+                      th:value="${#temporals.format(reservationDto.useToDatetime, 'yyyy-MM-dd') + 'T' + #temporals.format(reservationDto.useToDatetime, 'HH:mm')}"
                     />
                     <div
                       class="text-danger"
