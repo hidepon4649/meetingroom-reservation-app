@@ -64,8 +64,8 @@
               th:each="dow : ${#numbers.sequence(0,6)}"
               class="col border p-2"
               style="min-height: 100px"
-              th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())},formatter=${T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')},dateStr=${date.format(formatter)}"
-              th:classappend="${date.equals(T(java.time.LocalDate).now())} ? 'border-primary border-3' : ''"
+              th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())},formatter=${T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')},dateStr=${date.format(formatter)},today=${T(java.time.LocalDate).now(T(java.time.ZoneId).of('Asia/Tokyo'))}"
+              th:classappend="${date.equals(today)} ? 'border-primary border-3' : ''"
             >
               <div class="d-flex align-items-center mb-2">
                 <!-- 日付ラベル -->
