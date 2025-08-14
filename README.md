@@ -28,6 +28,7 @@
 
 - 認証認可
 - 画面から投入したデータの妥当性チェック
+- カスタムアノテーション
 - データベースへの登録/更新/削除
 - 画像アップロード
 - ファイルアップロード
@@ -36,7 +37,7 @@
 ## 使用技術
 
 - **フロントエンド**: Thymeleaf, Bootstrap
-- **バックエンド**: Spring Boot, Gradle
+- **バックエンド**: Spring Boot,Spring Security, Gradle
 - **データベース**: MySQL
 - **インフラ**: Docker(コンテナ化), Docker Compose
 
