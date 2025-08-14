@@ -22,7 +22,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+        return reservationRepository.findAll(Sort.by(Sort.Order.asc("room.id"), Sort.Order.asc("useFromDatetime")));
     }
 
     @Override
