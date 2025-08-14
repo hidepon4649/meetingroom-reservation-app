@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 
 import com.example.meetingroom.entity.Room;
 import com.example.meetingroom.entity.User;
+import com.example.meetingroom.validation.DateRange;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+@DateRange(startField = "useFromDatetime", endField = "useToDatetime", message = "利用開始日時は利用終了日時より前でなければなりません")
 public class ReservationDto {
 
     private Long id;
