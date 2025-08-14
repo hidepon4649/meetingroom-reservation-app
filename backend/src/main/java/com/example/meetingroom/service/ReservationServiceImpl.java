@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +61,10 @@ public class ReservationServiceImpl implements ReservationService {
         YearMonth ym = YearMonth.of(year, month);
         LocalDateTime start = ym.atDay(1).atStartOfDay(); // 1日0時
         LocalDateTime end = ym.atEndOfMonth().atTime(23, 59, 59); // 月末23:59:59
-        return reservationRepository.findByUseFromDatetimeBetween(start, end);
+        return reservationRepository.findByUseFromDatetimeBetween(start, end,
+                Sort.by(
+                        Sort.Order.asc("room.id"),
+                        Sort.Order.asc("useFromDatetime")));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.meetingroom.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
         boolean existsByUserId(Long userId);
 
-        List<Reservation> findByUseFromDatetimeBetween(LocalDateTime start, LocalDateTime end);
+        List<Reservation> findByUseFromDatetimeBetween(LocalDateTime start, LocalDateTime end, Sort sort);
 
         /**
          * 時間帯重複チェック(新規登録用)
