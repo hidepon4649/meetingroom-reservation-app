@@ -9,36 +9,19 @@
   </head>
   <body>
     <main>
-      <!-- デバッグ出力 ここから -->
-      <!-- <div class="container mt-5">
-        <h5>DEBUG: reservationMap Dump</h5>
-        <ul class="small">
-          <li th:each="entry : ${reservationMap}">
-            <span th:text="${entry.key}"></span> :
-            <ul>
-              <li th:each="res : ${entry.value}">
-                <span
-                  th:text="'[' + ${res.id} + '] ' + ${res.room.name} + '/' + ${res.user.name}"
-                ></span>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div> -->
-      <!-- デバッグ出力 ここまで -->
-
       <!-- 年月切替ナビ -->
       <div class="d-flex justify-content-between mb-2">
         <a
           class="btn btn-outline-secondary"
-          th:href="@{'/reservation/calendar/' + ${yearMonth.minusMonths(1).year} + '/' + ${yearMonth.minusMonths(1).monthValue}}"
+          th:href="@{/reservation/calendar/{year}/{month}(year=${yearMonth.minusMonths(1).year}, month=${yearMonth.minusMonths(1).monthValue})}"
           >← 前月</a
         >
-        <h2 th:text="${yearMonth} + ' の予約カレンダー'"></h2>
+        <h2 th:text="|${yearMonth}の予約カレンダー|"></h2>
         <a
           class="btn btn-outline-secondary"
-          th:href="@{'/reservation/calendar/' + ${yearMonth.plusMonths(1).year} + '/' + ${yearMonth.plusMonths(1).monthValue}}"
-          >次月 →</a
+          th:href="@{/reservation/calendar/{year}/{month}(year=${yearMonth.plusMonths(1).year}, month=${yearMonth.plusMonths(1).monthValue})}"
+        >
+          次月 →</a
         >
       </div>
 
@@ -71,7 +54,7 @@
                 <!-- 日付ラベル -->
                 <!-- /* 要注意、th:classappendの中身を改行したらエラーになる。*/ -->
                 <div
-                  th:text="${date.dayOfMonth} + '日'"
+                  th:text="|${date.dayOfMonth}日|"
                   th:classappend="|${(date.month != yearMonth.month) ? 'text-muted' : 'fw-bold'} ${(date.dayOfWeek.value == 7) ? ' text-danger' : ''} ${(date.dayOfWeek.value == 6) ? ' text-primary' : ''}|"
                 ></div>
                 <div>

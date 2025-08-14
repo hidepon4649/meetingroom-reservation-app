@@ -190,16 +190,24 @@
           <!-- 既存会議室カード例 -->
           <div th:each="room : ${rooms}" th:object="${room}" class="card mb-3">
             <div class="card-body">
-              <h5 class="card-title" th:text="'部屋名称:' + *{name}"></h5>
+              <h5 class="card-title" th:text="|部屋名称:${room.name}|"></h5>
               <div class="row">
-                <div class="card-text mb-1 col-auto">[['id:' + *{id}]]</div>
-                <div class="card-text mb-1 col-auto">
-                  [['場所:' + *{place}]]
-                </div>
-                <div class="card-text mb-2 col-auto">[['tel:' + *{tel}]]</div>
-                <div class="card-text mb-2 col-auto">
-                  [['tel:' + *{remarks}]]
-                </div>
+                <div
+                  class="card-text mb-1 col-auto"
+                  th:text="|id:${room.id}|"
+                ></div>
+                <div
+                  class="card-text mb-1 col-auto"
+                  th:text="|場所:${room.place}|"
+                ></div>
+                <div
+                  class="card-text mb-2 col-auto"
+                  th:text="|tel:${room.tel}|"
+                ></div>
+                <div
+                  class="card-text mb-2 col-auto"
+                  th:text="|備考:${room.remarks}|"
+                ></div>
               </div>
               <div class="d-flex justify-content-end">
                 <!-- 編集ボタン -->

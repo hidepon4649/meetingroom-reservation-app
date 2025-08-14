@@ -272,20 +272,32 @@
             />
 
             <div class="card-body">
-              <h5 class="card-title" th:text="'名前:' + *{name}"></h5>
+              <h5 class="card-title" th:text="|名前:${user.name}|"></h5>
               <div class="row">
-                <div class="card-text mb-1 col-auto">[['id:' + *{id}]]</div>
-                <div class="card-text mb-1 col-auto">
-                  [['email:' + *{email}]]
-                </div>
-                <div class="card-text mb-1 col-auto">*********</div>
-                <div class="card-text mb-1 col-auto">
-                  [[*{isAdmin ? '管理者' : ''}]]
-                </div>
-                <div class="card-text mb-1 col-auto">
-                  [['所属:' + *{department}]]
-                </div>
-                <div class="card-text mb-2 col-auto">[['tel:' + *{tel}]]</div>
+                <div
+                  class="card-text mb-1 col-auto"
+                  th:text="|id:${user.id}|"
+                ></div>
+                <div
+                  class="card-text mb-1 col-auto"
+                  th:text="|email:${user.email}|"
+                ></div>
+                <div
+                  class="card-text mb-1 col-auto"
+                  th:text="|*********|"
+                ></div>
+                <div
+                  class="card-text mb-1 col-auto"
+                  th:text="|${user.isAdmin ? '管理者' : ''}|"
+                ></div>
+                <div
+                  class="card-text mb-1 col-auto"
+                  th:text="|所属:${user.department}|"
+                ></div>
+                <div
+                  class="card-text mb-2 col-auto"
+                  th:text="|tel:${user.tel}|"
+                ></div>
               </div>
               <div class="d-flex justify-content-end">
                 <!-- 編集ボタン -->
