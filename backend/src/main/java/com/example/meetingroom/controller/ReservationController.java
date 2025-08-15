@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.ReservationDto;
@@ -47,7 +49,10 @@ public class ReservationController {
     }
 
     @GetMapping("reservation")
-    public String index(Model model,
+    public String index(
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size, // ControllerAdvice で設定された値をそのまま使用
+            Model model,
             @ModelAttribute("loginUserId") Long loginUserId,
             @ModelAttribute("isAdmin") Boolean isAdmin) {
 
@@ -60,7 +65,12 @@ public class ReservationController {
             reservationDto.setUser(userEntity);
         }
 
-        model.addAttribute("reservations", reservationService.getAllReservations());
+        Page<Reservation> reservationPage = reservationService.getReservationsPage(page, size);
+
+        model.addAttribute("reservations", reservationPage.getContent());
+        model.addAttribute("reservationPage", reservationPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", reservationPage.getTotalPages());
         model.addAttribute("reservationDto", reservationDto);
         model.addAttribute("rooms", roomService.getAllRooms());
         model.addAttribute("users", userService.getAllUsers());
@@ -104,6 +114,8 @@ public class ReservationController {
             @Validated @ModelAttribute ReservationDto reservationDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size,
             Model model) {
 
         // 管理者かどうか確認
@@ -124,7 +136,14 @@ public class ReservationController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("reservations", reservationService.getAllReservations()); // 再表示用
+            // ページング付きのデータを再取得
+            Page<Reservation> reservationPage = reservationService.getReservationsPage(page, size);
+            model.addAttribute("reservations", reservationPage.getContent());
+            model.addAttribute("reservationPage", reservationPage);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", reservationPage.getTotalPages());
+            model.addAttribute("size", size);
+
             model.addAttribute("rooms", roomService.getAllRooms());
             model.addAttribute("users", userService.getAllUsers());
 
@@ -144,7 +163,8 @@ public class ReservationController {
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "予約を登録しました");
 
-        return "redirect:/reservation";
+        // 現在のページ番号とサイズをURLパラメータとして付与してリダイレクト
+        return "redirect:/reservation?page=" + page + "&size=" + size;
     }
 
     @PostMapping(value = "/reservation/{id}", params = "_method=update")
@@ -152,6 +172,8 @@ public class ReservationController {
             @Validated @ModelAttribute ReservationDto reservationDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size,
             Model model) {
 
         // 管理者かどうか確認
@@ -175,6 +197,9 @@ public class ReservationController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("rooms", roomService.getAllRooms());
             model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("size", size);
+
             return "reservation/edit";
         }
 
@@ -190,13 +215,15 @@ public class ReservationController {
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "会議室予約を編集しました。");
 
-        return "redirect:/reservation";
+        return "redirect:/reservation?page=" + page + "&size=" + size;
 
     }
 
     @GetMapping(value = "/reservation/{id}")
     public String updateReservation(@PathVariable Long id,
-            Model model) {
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size) {
 
         Reservation reservation = reservationService.findById(id);
 
@@ -211,15 +238,20 @@ public class ReservationController {
         model.addAttribute("reservationDto", reservationDto);
         model.addAttribute("rooms", roomService.getAllRooms());
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
 
+        // return "reservation/edit?page=" + page + "&size=" + size;
         return "reservation/edit";
     }
 
     @PostMapping(value = "/reservation/{id}", params = "_method=delete")
-    public String deleteReservation(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteReservation(@PathVariable Long id, RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size) {
         reservationService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "会議室予約を削除しました。");
-        return "redirect:/reservation";
+        return "redirect:/reservation?page=" + page + "&size=" + size;
     }
 
     @GetMapping("reservation/calendar")

@@ -49,6 +49,8 @@ logging:
 
 app:
   timezone: Asia/Tokyo
+  page-size: 5
+
   # jwtSecret: mySecretKey0123456789aop9879sgjnspkAxmndfsopkvajoirjg94gf2opfng2moknm
   # jwtExpirationMs: 3600000
 # Actuator endpointsは開発環境でのみ有効にすることを推奨します。

@@ -3,6 +3,8 @@ package com.example.meetingroom.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +15,8 @@ import com.example.meetingroom.entity.Reservation;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+
+        Page<Reservation> findAll(Pageable pageable);
 
         boolean existsByRoomId(Long roomId);
 

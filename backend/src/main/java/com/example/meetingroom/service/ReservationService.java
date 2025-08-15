@@ -3,6 +3,8 @@ package com.example.meetingroom.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.example.meetingroom.entity.Reservation;
 
 public interface ReservationService {
@@ -23,4 +25,6 @@ public interface ReservationService {
     boolean existsOverlapForInsert(Long roomId, LocalDateTime newFrom, LocalDateTime newTo);
 
     boolean existsOverlapForUpdate(Long roomId, Long reservationId, LocalDateTime newFrom, LocalDateTime newTo);
+
+    Page<Reservation> getReservationsPage(int page, int size);
 }

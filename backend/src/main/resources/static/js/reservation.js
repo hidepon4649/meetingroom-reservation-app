@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reservation-edit-button').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const url = `/reservation/${btn.dataset.id}`;
+      const url = `/reservation/${btn.dataset.id}?page=${btn.dataset.page}&size=${btn.dataset.size}`;
       window.location.href = url;
     });
   });
@@ -29,8 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!confirm('本当に削除しますか？')) return;
 
       const form = document.getElementById('deleteForm');
-      form.action = `${form.action}/${btn.dataset.id}`;
-      form.id.value = btn.dataset.id;
+      form.action = `${form.action}/${btn.dataset.id}?page=${btn.dataset.page}&size=${btn.dataset.size}`;
       form.submit();
     });
   });

@@ -18,7 +18,6 @@
         <!-- 会議室予約削除 -->
         <form id="deleteForm" th:action="@{/reservation}" method="post">
           <input type="hidden" name="_method" value="delete" />
-          <input type="hidden" name="id" />
         </form>
 
         <!-- テーブル（PC用） -->
@@ -42,6 +41,8 @@
                 method="post"
                 th:object="${reservationDto}"
               >
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
                 <td></td>
                 <td>
                   <select class="form-select" th:field="*{room.id}">
@@ -174,6 +175,8 @@
                   <button
                     class="btn btn-secondary mx-1 reservation-edit-button"
                     th:data-id="*{id}"
+                    th:data-page="${currentPage}"
+                    th:data-size="${size}"
                   >
                     <i class="bi bi-pencil"></i>
                   </button>
@@ -181,6 +184,8 @@
                   <button
                     class="btn btn-danger mx-1 reservation-delete-button"
                     th:data-id="*{id}"
+                    th:data-page="${currentPage}"
+                    th:data-size="${size}"
                   >
                     <i class="bi bi-trash"></i>
                   </button>
@@ -200,6 +205,8 @@
                 method="post"
                 th:object="${reservationDto}"
               >
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
                 <div class="col-12">
                   <label class="form-label">予約会議室</label>
                   <select class="form-select" th:field="*{room.id}">
@@ -317,7 +324,7 @@
               <div class="row">
                 <div
                   class="card-text mb-1 col-auto"
-                  th:text="|id:${reservation.user.id}|"
+                  th:text="|id:${reservation.id}|"
                 ></div>
                 <div
                   class="card-text mb-2 col-auto"
@@ -348,6 +355,8 @@
                 <button
                   class="btn btn-secondary mx-1 reservation-edit-button"
                   th:data-id="*{id}"
+                  th:data-page="${currentPage}"
+                  th:data-size="${size}"
                 >
                   <i class="bi bi-pencil"></i>
                 </button>
@@ -355,6 +364,8 @@
                 <button
                   class="btn btn-danger mx-1 reservation-delete-button"
                   th:data-id="*{id}"
+                  th:data-page="${currentPage}"
+                  th:data-size="${size}"
                 >
                   <i class="bi bi-trash"></i>
                 </button>
@@ -362,6 +373,43 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- ページングリンク -->
+      <div class="d-flex justify-content-center mt-3">
+        <ul class="pagination">
+          <li
+            class="page-item"
+            th:classappend="${currentPage == 0} ? 'disabled'"
+          >
+            <a
+              class="page-link"
+              th:href="@{|/reservation?page=${currentPage - 1}&size=${size}|}"
+              >前へ</a
+            >
+          </li>
+          <li
+            class="page-item"
+            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'"
+          >
+            <a
+              class="page-link"
+              th:href="@{|/reservation?page=${i}|}"
+              th:text="${i + 1}"
+              >1</a
+            >
+          </li>
+          <li
+            class="page-item"
+            th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'"
+          >
+            <a
+              class="page-link"
+              th:href="@{|/reservation?page=${currentPage + 1}&size=${size}|}"
+              >次へ</a
+            >
+          </li>
+        </ul>
       </div>
     </main>
     <footer>

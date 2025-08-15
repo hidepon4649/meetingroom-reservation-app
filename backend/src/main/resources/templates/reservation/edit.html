@@ -34,6 +34,9 @@
                 th:object="${reservationDto}"
               >
                 <input type="hidden" name="_method" value="update" />
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
+
                 <td>[[*{id}]]</td>
                 <td>
                   <select class="form-control" th:field="*{room.id}" required>
@@ -150,6 +153,9 @@
                 th:object="${reservationDto}"
               >
                 <input type="hidden" name="_method" value="update" />
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
+
                 <div class="col-12">
                   <label class="form-label">予約会議室</label>
                   <select class="form-select" th:field="*{room.id}">

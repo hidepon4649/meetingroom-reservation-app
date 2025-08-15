@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,5 +77,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean existsOverlapForUpdate(Long roomId, Long reservationId, LocalDateTime newFrom, LocalDateTime newTo) {
         return reservationRepository.existsOverlapForUpdate(roomId, reservationId, newFrom, newTo);
+    }
+
+    @Override
+    public Page<Reservation> getReservationsPage(int page, int size) {
+        PageRequest pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Order.asc("room.id"), Sort.Order.asc("useFromDatetime")));
+        return reservationRepository.findAll(pageable);
     }
 }
