@@ -22,7 +22,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> getAllRooms() {
-        return roomRepository.findAll();
+        return roomRepository.findAll(Sort.by(Sort.Order.asc("name")));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class RoomServiceImpl implements RoomService {
         PageRequest pageable = PageRequest.of(
                 page,
                 size,
-                Sort.by(Sort.Order.asc("id")));
+                Sort.by(Sort.Order.asc("name")));
         return roomRepository.findAll(pageable);
     }
 

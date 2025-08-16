@@ -24,7 +24,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll(Sort.by(Sort.Order.asc("room.id"), Sort.Order.asc("useFromDatetime")));
+        return reservationRepository.findAll(Sort.by(Sort.Order.asc("room.name"), Sort.Order.asc("useFromDatetime")));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDateTime end = ym.atEndOfMonth().atTime(23, 59, 59); // 月末23:59:59
         return reservationRepository.findByUseFromDatetimeBetween(start, end,
                 Sort.by(
-                        Sort.Order.asc("room.id"),
+                        Sort.Order.asc("room.name"),
                         Sort.Order.asc("useFromDatetime")));
     }
 
@@ -84,7 +84,7 @@ public class ReservationServiceImpl implements ReservationService {
         PageRequest pageable = PageRequest.of(
                 page,
                 size,
-                Sort.by(Sort.Order.asc("room.id"), Sort.Order.asc("useFromDatetime")));
+                Sort.by(Sort.Order.asc("room.name"), Sort.Order.asc("useFromDatetime")));
         return reservationRepository.findAll(pageable);
     }
 }
