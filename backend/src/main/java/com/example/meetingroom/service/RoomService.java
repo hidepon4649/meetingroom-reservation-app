@@ -2,6 +2,8 @@ package com.example.meetingroom.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.example.meetingroom.entity.Room;
 
 public interface RoomService {
@@ -14,4 +16,5 @@ public interface RoomService {
 
     void deleteById(Long id);
 
+    Page<Room> getRoomsPage(int page, int size);
 }

@@ -2,7 +2,7 @@
 <html
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script})}"
+  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script}, null)}"
 >
   <head>
     <title>会議室予約 | 予約編集</title>
@@ -33,6 +33,9 @@
                 th:object="${roomDto}"
               >
                 <input type="hidden" name="_method" value="update" />
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
+
                 <td>[[*{id}]]</td>
                 <td>
                   <input class="form-control" type="text" th:field="*{name}" />
@@ -83,7 +86,11 @@
                     <button class="btn btn-save btn-success mx-1" type="submit">
                       保存
                     </button>
-                    <button class="btn room-cancel-button btn-secondary mx-1">
+                    <button
+                      class="btn room-cancel-button btn-secondary mx-1"
+                      th:data-page="${currentPage}"
+                      th:data-size="${size}"
+                    >
                       取消
                     </button>
                   </div>
@@ -105,6 +112,9 @@
                 th:object="${roomDto}"
               >
                 <input type="hidden" name="_method" value="update" />
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
+
                 <div class="col-12">
                   <label class="form-label">部屋名称</label>
                   <input class="form-control" type="text" th:field="*{name}" />
@@ -157,7 +167,11 @@
                   <button class="btn btn-save btn-success" type="submit">
                     保存
                   </button>
-                  <button class="btn room-cancel-button btn-secondary">
+                  <button
+                    class="btn room-cancel-button btn-secondary"
+                    th:data-page="${currentPage}"
+                    th:data-size="${size}"
+                  >
                     取消
                   </button>
                 </div>

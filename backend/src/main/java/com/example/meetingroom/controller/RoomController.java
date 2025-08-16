@@ -2,6 +2,7 @@ package com.example.meetingroom.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.RoomDto;
@@ -32,8 +34,17 @@ public class RoomController {
     }
 
     @GetMapping("admin/room")
-    public String index(Model model) {
-        model.addAttribute("rooms", roomService.getAllRooms());
+    public String index(
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size, // ControllerAdvice で設定された値をそのまま使用
+            Model model) {
+
+        Page<Room> roomPage = roomService.getRoomsPage(page, size);
+
+        model.addAttribute("rooms", roomPage.getContent());
+        model.addAttribute("roomPage", roomPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", roomPage.getTotalPages());
         model.addAttribute("roomDto", new RoomDto());
         return "room/index";
     }
@@ -43,10 +54,19 @@ public class RoomController {
             @Validated @ModelAttribute RoomDto roomDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size,
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("rooms", roomService.getAllRooms()); // 再表示用
+            // ページング付きのデータを再取得
+            Page<Room> roomPage = roomService.getRoomsPage(page, size);
+            model.addAttribute("rooms", roomPage.getContent());
+            model.addAttribute("roomPage", roomPage);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", roomPage.getTotalPages());
+            model.addAttribute("size", size);
+
             return "room/index";
         }
 
@@ -61,7 +81,8 @@ public class RoomController {
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "会議室を登録しました");
 
-        return "redirect:/admin/room";
+        // 現在のページ番号とサイズをURLパラメータとして付与してリダイレクト
+        return "redirect:/admin/room?page=" + page + "&size=" + size;
     }
 
     @PostMapping(value = "/admin/room/{id}", params = "_method=update")
@@ -69,9 +90,14 @@ public class RoomController {
             @Validated @ModelAttribute RoomDto roomDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size,
             Model model) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("currentPage", page);
+            model.addAttribute("size", size);
+
             return "room/edit";
         }
 
@@ -86,12 +112,14 @@ public class RoomController {
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "会議室を編集しました。");
 
-        return "redirect:/admin/room";
+        return "redirect:/admin/room?page=" + page + "&size=" + size;
     }
 
     @GetMapping(value = "/admin/room/{id}")
     public String updateRoom(@PathVariable Long id,
-            Model model) {
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size) {
 
         Room room = roomService.findById(id);
 
@@ -103,22 +131,26 @@ public class RoomController {
         roomDto.setRemarks(room.getRemarks());
 
         model.addAttribute("roomDto", roomDto);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
 
         return "room/edit";
     }
 
     @PostMapping(value = "/admin/room/{id}", params = "_method=delete")
-    public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteRoom(@PathVariable Long id, RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size) {
 
         // 予約があるかチェック
         if (reservationService.existsByRoomId(id)) {
             redirectAttributes.addFlashAttribute("errorMessage", "予約が存在するため、会議室を削除できません。");
-            return "redirect:/admin/room";
+            return "redirect:/admin/room?page=" + page + "&size=" + size;
         }
 
         roomService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "会議室を削除しました。");
-        return "redirect:/admin/room";
+        return "redirect:/admin/room?page=" + page + "&size=" + size;
     }
 
 }
