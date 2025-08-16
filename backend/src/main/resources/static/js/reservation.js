@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.reservation-cancel-button').forEach((btn) => {
     btn.addEventListener('click', (event) => {
       event.preventDefault(); // フォーム送信防止
-      window.location.href = '/reservation'; // 画面遷移
+      window.location.href = `/reservation?page=${btn.dataset.page}&size=${btn.dataset.size}`; // 画面遷移
     });
   });
 });
