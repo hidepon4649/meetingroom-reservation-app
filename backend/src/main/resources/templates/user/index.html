@@ -2,7 +2,7 @@
 <html
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script})}"
+  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script},'/admin/user')}"
 >
   <head>
     <title>会議室予約 | ユーザ登録</title>
@@ -14,7 +14,6 @@
         <!-- ユーザ削除 -->
         <form id="deleteForm" th:action="@{/admin/user}" method="post">
           <input type="hidden" name="_method" value="delete" />
-          <input type="hidden" name="id" />
         </form>
 
         <!-- テーブル（PC用） -->
@@ -41,6 +40,8 @@
                 enctype="multipart/form-data"
                 th:object="${userDto}"
               >
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
                 <td></td>
                 <td>
                   <input
@@ -147,6 +148,8 @@
                   <button
                     class="btn btn-secondary mx-1 user-edit-button"
                     th:data-id="*{id}"
+                    th:data-page="${currentPage}"
+                    th:data-size="${size}"
                   >
                     <i class="bi bi-pencil"></i>
                   </button>
@@ -154,6 +157,8 @@
                   <button
                     class="btn btn-danger mx-1 user-delete-button"
                     th:data-id="*{id}"
+                    th:data-page="${currentPage}"
+                    th:data-size="${size}"
                   >
                     <i class="bi bi-trash"></i>
                   </button>
@@ -174,6 +179,9 @@
                 enctype="multipart/form-data"
                 th:object="${userDto}"
               >
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
+
                 <div class="col-12">
                   <label class="form-label">email</label>
                   <input
@@ -304,6 +312,8 @@
                 <button
                   class="btn btn-secondary mx-1 user-edit-button"
                   th:data-id="*{id}"
+                  th:data-page="${currentPage}"
+                  th:data-size="${size}"
                 >
                   <i class="bi bi-pencil"></i>
                 </button>
@@ -311,6 +321,8 @@
                 <button
                   class="btn btn-danger mx-1 user-delete-button"
                   th:data-id="*{id}"
+                  th:data-page="${currentPage}"
+                  th:data-size="${size}"
                 >
                   <i class="bi bi-trash"></i>
                 </button>

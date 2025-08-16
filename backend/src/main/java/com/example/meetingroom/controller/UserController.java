@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,9 +42,17 @@ public class UserController {
     }
 
     @GetMapping("admin/user")
-    public String index(Model model) {
+    public String index(
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size, // ControllerAdvice で設定された値をそのまま使用
+            Model model) {
 
-        model.addAttribute("users", userService.getAllUsers());
+        Page<User> userPage = userService.getUsersPage(page, size);
+
+        model.addAttribute("users", userPage.getContent());
+        model.addAttribute("userPage", userPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("userDto", new UserDto());
         return "user/index";
     }
@@ -52,10 +62,19 @@ public class UserController {
             @Validated @ModelAttribute UserDto userDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size,
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("users", userService.getAllUsers()); // 再表示用
+            // ページング付きのデータを再取得
+            Page<User> userPage = userService.getUsersPage(page, size);
+            model.addAttribute("users", userPage.getContent());
+            model.addAttribute("userPage", userPage);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", userPage.getTotalPages());
+            model.addAttribute("size", size);
+
             return "user/index";
         }
 
@@ -82,7 +101,8 @@ public class UserController {
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "ユーザを登録しました");
 
-        return "redirect:/admin/user";
+        // 現在のページ番号とサイズをURLパラメータとして付与してリダイレクト
+        return "redirect:/admin/user?page=" + page + "&size=" + size;
     }
 
     @PostMapping(value = "/admin/user/{id}", params = "_method=update")
@@ -90,11 +110,16 @@ public class UserController {
             @Validated @ModelAttribute UserDto userDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size,
             Model model) {
 
         if (bindingResult.hasErrors()) {
             // 画像がある場合は、再表示用にモデルに追加
             model.addAttribute("userPicture", userService.findById(id).getPicture());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("size", size);
+
             return "user/edit";
         }
 
@@ -121,12 +146,14 @@ public class UserController {
         // トースト表示用に成功メッセージをフラッシュスコープに保存
         redirectAttributes.addFlashAttribute("successMessage", "ユーザを編集しました。");
 
-        return "redirect:/admin/user";
+        return "redirect:/admin/user?page=" + page + "&size=" + size;
     }
 
     @GetMapping(value = "/admin/user/{id}")
     public String updateUser(@PathVariable Long id,
-            Model model) {
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size) {
 
         User user = userService.findById(id);
 
@@ -141,22 +168,26 @@ public class UserController {
 
         model.addAttribute("userDto", userDto);
         model.addAttribute("userPicture", user.getPicture());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
 
         return "user/edit";
     }
 
     @PostMapping(value = "/admin/user/{id}", params = "_method=delete")
-    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @ModelAttribute("size") int size) {
 
         // 予約があるかチェック
         if (reservationService.existsByUserId(id)) {
             redirectAttributes.addFlashAttribute("errorMessage", "予約が存在するため、ユーザを削除できません。");
-            return "redirect:/admin/user";
+            return "redirect:/admin/user?page=" + page + "&size=" + size;
         }
 
         userService.deleteById(id);
         redirectAttributes.addFlashAttribute("successMessage", "ユーザを削除しました。");
-        return "redirect:/admin/user";
+        return "redirect:/admin/user?page=" + page + "&size=" + size;
     }
 
 }

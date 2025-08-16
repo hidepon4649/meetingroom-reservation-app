@@ -2,7 +2,7 @@
 <html
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script})}"
+  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script}, null)}"
 >
   <head>
     <title>会議室予約 | ユーザ編集</title>
@@ -37,6 +37,9 @@
                 th:object="${userDto}"
               >
                 <input type="hidden" name="_method" value="update" />
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
+
                 <td>[[*{id}]]</td>
                 <td>
                   <input
@@ -122,7 +125,11 @@
                     <button class="btn btn-save btn-success mx-1" type="submit">
                       保存
                     </button>
-                    <button class="btn user-cancel-button btn-secondary mx-1">
+                    <button
+                      class="btn user-cancel-button btn-secondary mx-1"
+                      th:data-page="${currentPage}"
+                      th:data-size="${size}"
+                    >
                       取消
                     </button>
                   </div>
@@ -153,6 +160,9 @@
                 th:object="${userDto}"
               >
                 <input type="hidden" name="_method" value="update" />
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <input type="hidden" name="size" th:value="${size}" />
+
                 <div class="col-12">
                   <label class="form-label">email</label>
                   <input
@@ -236,7 +246,11 @@
                   <button class="btn btn-save btn-success" type="submit">
                     保存
                   </button>
-                  <button class="btn user-cancel-button btn-secondary">
+                  <button
+                    class="btn user-cancel-button btn-secondary"
+                    th:data-page="${currentPage}"
+                    th:data-size="${size}"
+                  >
                     取消
                   </button>
                 </div>
