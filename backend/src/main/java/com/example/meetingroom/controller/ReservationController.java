@@ -241,7 +241,6 @@ public class ReservationController {
         model.addAttribute("currentPage", page);
         model.addAttribute("size", size);
 
-        // return "reservation/edit?page=" + page + "&size=" + size;
         return "reservation/edit";
     }
 
