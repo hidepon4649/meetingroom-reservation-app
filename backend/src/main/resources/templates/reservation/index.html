@@ -2,7 +2,7 @@
 <html
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script})}"
+  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script},'/reservation')}"
 >
   <head>
     <title>会議室予約 | 予約登録</title>
@@ -373,43 +373,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <!-- ページングリンク -->
-      <div class="d-flex justify-content-center mt-3">
-        <ul class="pagination">
-          <li
-            class="page-item"
-            th:classappend="${currentPage == 0} ? 'disabled'"
-          >
-            <a
-              class="page-link"
-              th:href="@{|/reservation?page=${currentPage - 1}&size=${size}|}"
-              >前へ</a
-            >
-          </li>
-          <li
-            class="page-item"
-            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-            th:classappend="${i == currentPage} ? 'active'"
-          >
-            <a
-              class="page-link"
-              th:href="@{|/reservation?page=${i}|}"
-              th:text="${i + 1}"
-              >1</a
-            >
-          </li>
-          <li
-            class="page-item"
-            th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'"
-          >
-            <a
-              class="page-link"
-              th:href="@{|/reservation?page=${currentPage + 1}&size=${size}|}"
-              >次へ</a
-            >
-          </li>
-        </ul>
       </div>
     </main>
     <footer>

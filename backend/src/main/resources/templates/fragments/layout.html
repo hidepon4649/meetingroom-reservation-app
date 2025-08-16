@@ -3,7 +3,7 @@
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-  th:fragment="base(title, main, script)"
+  th:fragment="base(title, main, script, pagerBasePath)"
 >
   <head>
     <meta charset="UTF-8" />
@@ -91,7 +91,7 @@
     </nav>
 
     <main th:replace="${main}"></main>
-
+    <div th:replace="~{fragments/pager :: pager}"></div>
     <footer
       th:if="${#authorization.expression('isAuthenticated()')}"
       class="py-4"
@@ -112,7 +112,7 @@
             </form>
           </li>
 
-          <li>copyright &copy2025 abcsoftware all rights reserved.</li>
+          <li>copyright &copy;2025 abcsoftware all rights reserved.</li>
         </ul>
       </div>
       <script

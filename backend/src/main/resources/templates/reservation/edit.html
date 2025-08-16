@@ -2,7 +2,7 @@
 <html
   lang="ja"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script})}"
+  th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{::script}, null)}"
 >
   <head>
     <title>会議室予約 | 予約編集</title>
@@ -131,6 +131,8 @@
                     </button>
                     <button
                       class="btn reservation-cancel-button btn-secondary mx-1"
+                      th:data-page="${currentPage}"
+                      th:data-size="${size}"
                     >
                       取消
                     </button>
@@ -257,6 +259,8 @@
                   </button>
                   <button
                     class="btn reservation-cancel-button btn-secondary mx-1"
+                    th:data-page="${currentPage}"
+                    th:data-size="${size}"
                   >
                     取消
                   </button>
