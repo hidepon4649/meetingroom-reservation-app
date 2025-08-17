@@ -26,13 +26,13 @@
     <div class="container my-4">
       <!-- 曜日表示 -->
       <div class="row g-2 mb-1 text-center fw-bold">
-        <div class="col border p-2 text-danger">日</div>
-        <div class="col border p-2">月</div>
-        <div class="col border p-2">火</div>
-        <div class="col border p-2">水</div>
-        <div class="col border p-2">木</div>
-        <div class="col border p-2">金</div>
-        <div class="col border p-2 text-primary">土</div>
+        <div class="col-7th border p-2 text-danger">日</div>
+        <div class="col-7th border p-2">月</div>
+        <div class="col-7th border p-2">火</div>
+        <div class="col-7th border p-2">水</div>
+        <div class="col-7th border p-2">木</div>
+        <div class="col-7th border p-2">金</div>
+        <div class="col-7th border p-2 text-primary">土</div>
       </div>
       <!-- /* 要注意、th:withの中身を改行したらエラーになる。*/ -->
       <div
@@ -42,7 +42,7 @@
         <div th:each="week : ${#numbers.sequence(0,5)}" class="row g-2 mb-1">
           <div
             th:each="dow : ${#numbers.sequence(0,6)}"
-            class="col border p-2"
+            class="col-7th border p-2"
             style="min-height: 100px"
             th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())},formatter=${T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')},timeFormatter=${T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')},dateStr=${date.format(formatter)},today=${T(java.time.LocalDate).now(T(java.time.ZoneId).of('Asia/Tokyo'))}"
             th:classappend="${date.equals(today)} ? 'border-primary border-3' : ''"
@@ -51,7 +51,7 @@
               <!-- 日付ラベル -->
               <!-- /* 要注意、th:classappendの中身を改行したらエラーになる。*/ -->
               <div
-                th:text="|${date.dayOfMonth}日|"
+                th:text="${date.dayOfMonth}"
                 th:classappend="|${(date.month != yearMonth.month) ? 'text-muted' : 'fw-bold'} ${(date.dayOfWeek.value == 7) ? ' text-danger' : ''} ${(date.dayOfWeek.value == 6) ? ' text-primary' : ''}|"
               ></div>
               <div>
@@ -70,7 +70,7 @@
                 <li th:each="res : ${resList}">
                   <a
                     th:href="@{/reservation/{id}(id=${res.id})}"
-                    class="badge bg-info text-dark d-block text-start mb-1"
+                    class="badge bg-info text-dark d-block text-start mb-1 text-wrap"
                     th:text="|${res.room.name}/${res.useFromDatetime.format(timeFormatter)}～${res.useToDatetime.format(timeFormatter)}/${res.user.name}|"
                   ></a>
                 </li>

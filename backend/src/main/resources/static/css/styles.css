@@ -9,6 +9,17 @@
   --bs-table-hover-bg: #dff; /* ホバー背景色 */
 }
 
+/* カレンダー表示のセル内改行 */
+a.badge.text-wrap {
+  overflow-wrap: break-word; /* 長い単語を折り返す */
+  word-break: break-all; /* 区切りのない英数字も折り返す */
+}
+/* 1週間(7日)を横1列表示 */
+.col-7th {
+  flex: 0 0 auto;
+  width: calc(100% / 7);
+}
+
 /* スマホ時はカード表示・テーブル非表示 */
 @media (max-width: 768px) {
   .user-card-list {
