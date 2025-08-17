@@ -4,88 +4,83 @@
   xmlns:th="http://www.thymeleaf.org"
   th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{}, null)}"
 >
-  <head>
-    <title>会議室予約 | 予約カレンダー</title>
-  </head>
-  <body>
-    <main>
-      <!-- 年月切替ナビ -->
-      <div class="d-flex justify-content-between mb-2">
-        <a
-          class="btn btn-outline-secondary"
-          th:href="@{/reservation/calendar/{year}/{month}(year=${yearMonth.minusMonths(1).year}, month=${yearMonth.minusMonths(1).monthValue})}"
-          >← 前月</a
-        >
-        <h2 th:text="|${yearMonth}の予約カレンダー|"></h2>
-        <a
-          class="btn btn-outline-secondary"
-          th:href="@{/reservation/calendar/{year}/{month}(year=${yearMonth.plusMonths(1).year}, month=${yearMonth.plusMonths(1).monthValue})}"
-        >
-          次月 →</a
-        >
+  <title>会議室予約 | 予約カレンダー</title>
+  <main>
+    <!-- 年月切替ナビ -->
+    <div class="d-flex justify-content-between mb-2">
+      <a
+        class="btn btn-outline-secondary"
+        th:href="@{/reservation/calendar/{year}/{month}(year=${yearMonth.minusMonths(1).year}, month=${yearMonth.minusMonths(1).monthValue})}"
+        >← 前月</a
+      >
+      <h2 th:text="|${yearMonth}の予約カレンダー|"></h2>
+      <a
+        class="btn btn-outline-secondary"
+        th:href="@{/reservation/calendar/{year}/{month}(year=${yearMonth.plusMonths(1).year}, month=${yearMonth.plusMonths(1).monthValue})}"
+      >
+        次月 →</a
+      >
+    </div>
+
+    <!-- カレンダー本体 -->
+    <div class="container my-4">
+      <!-- 曜日表示 -->
+      <div class="row g-2 mb-1 text-center fw-bold">
+        <div class="col border p-2 text-danger">日</div>
+        <div class="col border p-2">月</div>
+        <div class="col border p-2">火</div>
+        <div class="col border p-2">水</div>
+        <div class="col border p-2">木</div>
+        <div class="col border p-2">金</div>
+        <div class="col border p-2 text-primary">土</div>
       </div>
+      <!-- /* 要注意、th:withの中身を改行したらエラーになる。*/ -->
+      <div
+        th:with="firstDay=${yearMonth.atDay(1)}, dayOfWeekValue=${firstDay.dayOfWeek.value}, calendarStart=${firstDay.minusDays(dayOfWeekValue % 7)}"
+      >
+        <!-- /* 要注意、マップにアクセスする際は、obj.get(キー)で呼び出せ。obj['キー']とすると日付評価が空振りする。 */ -->
+        <div th:each="week : ${#numbers.sequence(0,5)}" class="row g-2 mb-1">
+          <div
+            th:each="dow : ${#numbers.sequence(0,6)}"
+            class="col border p-2"
+            style="min-height: 100px"
+            th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())},formatter=${T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')},timeFormatter=${T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')},dateStr=${date.format(formatter)},today=${T(java.time.LocalDate).now(T(java.time.ZoneId).of('Asia/Tokyo'))}"
+            th:classappend="${date.equals(today)} ? 'border-primary border-3' : ''"
+          >
+            <div class="d-flex align-items-center mb-2">
+              <!-- 日付ラベル -->
+              <!-- /* 要注意、th:classappendの中身を改行したらエラーになる。*/ -->
+              <div
+                th:text="|${date.dayOfMonth}日|"
+                th:classappend="|${(date.month != yearMonth.month) ? 'text-muted' : 'fw-bold'} ${(date.dayOfWeek.value == 7) ? ' text-danger' : ''} ${(date.dayOfWeek.value == 6) ? ' text-primary' : ''}|"
+              ></div>
+              <div>
+                <a
+                  class="btn btn-sm mx-1"
+                  th:href="@{/reservation/date/{yyyyMMdd}(yyyyMMdd=${dateStr})}"
+                >
+                  <i class="bi bi-plus-circle"></i>
+                </a>
+              </div>
+            </div>
 
-      <!-- カレンダー本体 -->
-      <div class="container my-4">
-        <!-- 曜日表示 -->
-        <div class="row g-2 mb-1 text-center fw-bold">
-          <div class="col border p-2 text-danger">日</div>
-          <div class="col border p-2">月</div>
-          <div class="col border p-2">火</div>
-          <div class="col border p-2">水</div>
-          <div class="col border p-2">木</div>
-          <div class="col border p-2">金</div>
-          <div class="col border p-2 text-primary">土</div>
-        </div>
-        <!-- /* 要注意、th:withの中身を改行したらエラーになる。*/ -->
-        <div
-          th:with="firstDay=${yearMonth.atDay(1)}, dayOfWeekValue=${firstDay.dayOfWeek.value}, calendarStart=${firstDay.minusDays(dayOfWeekValue % 7)}"
-        >
-          <!-- /* 要注意、マップにアクセスする際は、obj.get(キー)で呼び出せ。obj['キー']とすると日付評価が空振りする。 */ -->
-          <div th:each="week : ${#numbers.sequence(0,5)}" class="row g-2 mb-1">
-            <div
-              th:each="dow : ${#numbers.sequence(0,6)}"
-              class="col border p-2"
-              style="min-height: 100px"
-              th:with="date=${calendarStart.plusDays(week * 7 + dow)}, resList=${reservationMap.get(date.toString())},formatter=${T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMdd')},timeFormatter=${T(java.time.format.DateTimeFormatter).ofPattern('HH:mm')},dateStr=${date.format(formatter)},today=${T(java.time.LocalDate).now(T(java.time.ZoneId).of('Asia/Tokyo'))}"
-              th:classappend="${date.equals(today)} ? 'border-primary border-3' : ''"
-            >
-              <div class="d-flex align-items-center mb-2">
-                <!-- 日付ラベル -->
-                <!-- /* 要注意、th:classappendの中身を改行したらエラーになる。*/ -->
-                <div
-                  th:text="|${date.dayOfMonth}日|"
-                  th:classappend="|${(date.month != yearMonth.month) ? 'text-muted' : 'fw-bold'} ${(date.dayOfWeek.value == 7) ? ' text-danger' : ''} ${(date.dayOfWeek.value == 6) ? ' text-primary' : ''}|"
-                ></div>
-                <div>
+            <!-- 予約表示 -->
+            <div th:if="${resList != null}">
+              <ul class="list-unstyled mb-0 small">
+                <li th:each="res : ${resList}">
                   <a
-                    class="btn btn-sm mx-1"
-                    th:href="@{/reservation/date/{yyyyMMdd}(yyyyMMdd=${dateStr})}"
-                  >
-                    <i class="bi bi-plus-circle"></i>
-                  </a>
-                </div>
-              </div>
-
-              <!-- 予約表示 -->
-              <div th:if="${resList != null}">
-                <ul class="list-unstyled mb-0 small">
-                  <li th:each="res : ${resList}">
-                    <a
-                      th:href="@{/reservation/{id}(id=${res.id})}"
-                      class="badge bg-info text-dark d-block text-start mb-1"
-                      th:text="|${res.room.name}/${res.useFromDatetime.format(timeFormatter)}～${res.useToDatetime.format(timeFormatter)}/${res.user.name}|"
-                    ></a>
-                  </li>
-                </ul>
-              </div>
+                    th:href="@{/reservation/{id}(id=${res.id})}"
+                    class="badge bg-info text-dark d-block text-start mb-1"
+                    th:text="|${res.room.name}/${res.useFromDatetime.format(timeFormatter)}～${res.useToDatetime.format(timeFormatter)}/${res.user.name}|"
+                  ></a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </main>
-    <footer></footer>
-  </body>
+    </div>
+  </main>
 </html>
 <!--
 /*

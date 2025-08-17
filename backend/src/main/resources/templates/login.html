@@ -4,54 +4,50 @@
   xmlns:th="http://www.thymeleaf.org"
   th:replace="~{fragments/layout ::base(~{::title}, ~{::main}, ~{}, null)}"
 >
-  <head>
-    <title>会議室予約 | ログイン</title>
-  </head>
-  <body>
-    <main>
-      <div class="container py-4">
-        <div
-          th:if="${param.error}"
-          class="alert alert-danger mx-auto mb-3"
-          style="max-width: 360px"
-        >
-          メールアドレスまたはパスワードが正しくありません。
-        </div>
-        <div
-          th:if="${param.logout}"
-          class="alert alert-success mx-auto mb-3"
-          style="max-width: 360px"
-        >
-          ログアウトしました。
-        </div>
-        <form th:action="@{/login}" method="post">
-          <div class="mx-auto" style="max-width: 360px">
-            <div class="mb-3">
-              <label class="form-label">email</label>
-              <input
-                class="form-control"
-                type="text"
-                name="email"
-                placeholder="email"
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">パスワード</label>
-              <input
-                class="form-control"
-                type="password"
-                name="password"
-                placeholder="パスワード"
-              />
-            </div>
-            <div class="text-center">
-              <button class="btn btn-primary mx-3 my-3" type="submit">
-                ログイン
-              </button>
-            </div>
-          </div>
-        </form>
+  <title>会議室予約 | ログイン</title>
+  <main>
+    <div class="container py-4">
+      <div
+        th:if="${param.error}"
+        class="alert alert-danger mx-auto mb-3"
+        style="max-width: 360px"
+      >
+        メールアドレスまたはパスワードが正しくありません。
       </div>
-    </main>
-  </body>
+      <div
+        th:if="${param.logout}"
+        class="alert alert-success mx-auto mb-3"
+        style="max-width: 360px"
+      >
+        ログアウトしました。
+      </div>
+      <form th:action="@{/login}" method="post">
+        <div class="mx-auto" style="max-width: 360px">
+          <div class="mb-3">
+            <label class="form-label">email</label>
+            <input
+              class="form-control"
+              type="text"
+              name="email"
+              placeholder="email"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">パスワード</label>
+            <input
+              class="form-control"
+              type="password"
+              name="password"
+              placeholder="パスワード"
+            />
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary mx-3 my-3" type="submit">
+              ログイン
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
 </html>
