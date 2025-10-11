@@ -17,6 +17,10 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 server:
   servlet:
     session:

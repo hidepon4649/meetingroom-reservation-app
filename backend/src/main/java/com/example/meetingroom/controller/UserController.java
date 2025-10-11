@@ -10,11 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -105,7 +101,7 @@ public class UserController {
         return "redirect:/admin/user?page=" + page + "&size=" + size;
     }
 
-    @PostMapping(value = "/admin/user/{id}", params = "_method=update")
+    @PutMapping(value = "/admin/user/{id}")
     public String updateUser(@PathVariable Long id,
             @Validated @ModelAttribute UserDto userDto,
             BindingResult bindingResult,
@@ -174,7 +170,7 @@ public class UserController {
         return "user/edit";
     }
 
-    @PostMapping(value = "/admin/user/{id}", params = "_method=delete")
+    @DeleteMapping(value = "/admin/user/{id}")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes,
             @RequestParam(defaultValue = "0") int page,
             @ModelAttribute("size") int size) {

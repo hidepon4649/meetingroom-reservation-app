@@ -9,8 +9,7 @@
     <!-- コンテンツ領域 -->
     <div class="container-fluid py-4">
       <!-- 会議室削除 -->
-      <form id="deleteForm" th:action="@{/admin/room}" method="post">
-        <input type="hidden" name="_method" value="delete" />
+      <form id="deleteForm" th:action="@{/admin/room}" th:method="delete">
       </form>
 
       <!-- テーブル（PC用） -->

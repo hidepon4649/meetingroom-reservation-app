@@ -25,12 +25,10 @@
           <!-- 予約編集 -->
           <tr>
             <form
-              id="editForm"
               th:action="@{/reservation/{id}(id=${reservationDto.id})}"
-              method="post"
+              th:method="put"
               th:object="${reservationDto}"
             >
-              <input type="hidden" name="_method" value="update" />
               <input type="hidden" name="page" th:value="${currentPage}" />
               <input type="hidden" name="size" th:value="${size}" />
 
@@ -141,13 +139,11 @@
         <div class="card mb-2">
           <div class="card-body">
             <form
-              id="editForm"
               class="row g-2"
               th:action="@{/reservation/{id}(id=${reservationDto.id})}"
-              method="post"
+              th:method="put"
               th:object="${reservationDto}"
             >
-              <input type="hidden" name="_method" value="update" />
               <input type="hidden" name="page" th:value="${currentPage}" />
               <input type="hidden" name="size" th:value="${size}" />
 

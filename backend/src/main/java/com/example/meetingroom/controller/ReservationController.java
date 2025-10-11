@@ -16,11 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.meetingroom.dto.ReservationDto;
@@ -167,7 +163,7 @@ public class ReservationController {
         return "redirect:/reservation?page=" + page + "&size=" + size;
     }
 
-    @PostMapping(value = "/reservation/{id}", params = "_method=update")
+    @PutMapping(value = "/reservation/{id}")
     public String updateReservation(@PathVariable Long id,
             @Validated @ModelAttribute ReservationDto reservationDto,
             BindingResult bindingResult,
@@ -244,7 +240,7 @@ public class ReservationController {
         return "reservation/edit";
     }
 
-    @PostMapping(value = "/reservation/{id}", params = "_method=delete")
+    @DeleteMapping(value = "/reservation/{id}")
     public String deleteReservation(@PathVariable Long id, RedirectAttributes redirectAttributes,
             @RequestParam(defaultValue = "0") int page,
             @ModelAttribute("size") int size) {

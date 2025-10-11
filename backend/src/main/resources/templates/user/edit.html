@@ -27,13 +27,11 @@
           <!-- ユーザ編集 -->
           <tr>
             <form
-              id="editForm"
               th:action="@{/admin/user/{id}(id=${userDto.id})}"
-              method="post"
+              th:method="put"
               enctype="multipart/form-data"
               th:object="${userDto}"
             >
-              <input type="hidden" name="_method" value="update" />
               <input type="hidden" name="page" th:value="${currentPage}" />
               <input type="hidden" name="size" th:value="${size}" />
 
@@ -145,14 +143,12 @@
 
           <div class="card-body">
             <form
-              id="editForm"
               class="row g-2"
               th:action="@{/admin/user/{id}(id=${userDto.id})}"
-              method="post"
+              th:method="put"
               enctype="multipart/form-data"
               th:object="${userDto}"
             >
-              <input type="hidden" name="_method" value="update" />
               <input type="hidden" name="page" th:value="${currentPage}" />
               <input type="hidden" name="size" th:value="${size}" />
 
