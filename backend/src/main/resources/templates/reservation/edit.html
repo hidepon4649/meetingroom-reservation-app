@@ -25,13 +25,10 @@
           <!-- 予約編集 -->
           <tr>
             <form
-              th:action="@{/reservation/{id}(id=${reservationDto.id})}"
+              th:action="@{/reservation/{id}(id=${reservationDto.id}, page=${currentPage}, size=${size})}"
               th:method="put"
               th:object="${reservationDto}"
             >
-              <input type="hidden" name="page" th:value="${currentPage}" />
-              <input type="hidden" name="size" th:value="${size}" />
-
               <td>[[*{id}]]</td>
               <td>
                 <select class="form-control" th:field="*{room.id}" required>
@@ -140,12 +137,10 @@
           <div class="card-body">
             <form
               class="row g-2"
-              th:action="@{/reservation/{id}(id=${reservationDto.id})}"
+              th:action="@{/reservation/{id}(id=${reservationDto.id}, page=${currentPage}, size=${size})}"
               th:method="put"
               th:object="${reservationDto}"
             >
-              <input type="hidden" name="page" th:value="${currentPage}" />
-              <input type="hidden" name="size" th:value="${size}" />
 
               <div class="col-12">
                 <label class="form-label">予約会議室</label>

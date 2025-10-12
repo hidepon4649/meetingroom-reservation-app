@@ -27,14 +27,11 @@
           <!-- ユーザ編集 -->
           <tr>
             <form
-              th:action="@{/admin/user/{id}(id=${userDto.id})}"
+              th:action="@{/admin/user/{id}(id=${userDto.id}, page=${currentPage}, size=${size})}"
               th:method="put"
               enctype="multipart/form-data"
               th:object="${userDto}"
             >
-              <input type="hidden" name="page" th:value="${currentPage}" />
-              <input type="hidden" name="size" th:value="${size}" />
-
               <td>[[*{id}]]</td>
               <td>
                 <input class="form-control" type="email" th:field="*{email}" />
@@ -144,14 +141,11 @@
           <div class="card-body">
             <form
               class="row g-2"
-              th:action="@{/admin/user/{id}(id=${userDto.id})}"
+              th:action="@{/admin/user/{id}(id=${userDto.id}, page=${currentPage}, size=${size})}"
               th:method="put"
               enctype="multipart/form-data"
               th:object="${userDto}"
             >
-              <input type="hidden" name="page" th:value="${currentPage}" />
-              <input type="hidden" name="size" th:value="${size}" />
-
               <div class="col-12">
                 <label class="form-label">email</label>
                 <input class="form-control" type="email" th:field="*{email}" />

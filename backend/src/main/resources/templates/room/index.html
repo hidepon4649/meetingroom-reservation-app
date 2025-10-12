@@ -28,12 +28,10 @@
           <!-- 新規登録 -->
           <tr>
             <form
-              th:action="@{/admin/room}"
+              th:action="@{/admin/room(page=${currentPage}, size=${size})}"
               method="post"
               th:object="${roomDto}"
             >
-              <input type="hidden" name="page" th:value="${currentPage}" />
-              <input type="hidden" name="size" th:value="${size}" />
               <td></td>
               <td>
                 <input class="form-control" type="text" th:field="*{name}" />
@@ -123,13 +121,10 @@
           <div class="card-body">
             <form
               class="row g-2"
-              th:action="@{/admin/room}"
+              th:action="@{/admin/room(page=${currentPage}, size=${size})}"
               method="post"
               th:object="${roomDto}"
             >
-              <input type="hidden" name="page" th:value="${currentPage}" />
-              <input type="hidden" name="size" th:value="${size}" />
-
               <div class="col-12">
                 <label class="form-label">部屋名称</label>
                 <input class="form-control" type="text" th:field="*{name}" />
